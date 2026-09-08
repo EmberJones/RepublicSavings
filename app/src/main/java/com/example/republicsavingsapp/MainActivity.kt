@@ -7,7 +7,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var expensesDAO: ExpensesDAO
+    public lateinit var expensesDAO: ExpensesDAO
+    public lateinit var expenseRepository: ExpenseRepository
+    public lateinit var userRepository: UserRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -19,5 +22,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         expensesDAO = AppDatabase.getDatabase(applicationContext).ExpensesDAO()
+        expenseRepository = ExpenseRepository(expensesDAO)
+        userRepository = UserRepository(expensesDAO)
     }
 }

@@ -9,5 +9,4 @@ data class Users(
     val userID: Int = 0,
     val userName: String,
     val userPassword: String
-    //maybe add someway to automatically hash username? Will look into this
 )

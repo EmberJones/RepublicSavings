@@ -7,7 +7,7 @@ data class Expenses(
     @PrimaryKey(autoGenerate = true)
     val expenseID: Int = 0,     // not needing to show the user
 
-    val userHash: String,       // the hash of the username, to differ between records from different users off the same app
+    val userId: Int,       // the row number of the user in the Users Table (1 user:Many expenses relationship)
     val expenseName: String,
     val expenseDescription: String? = null,         // descriptions are allowed to be null
     val expenseAmount: String,
