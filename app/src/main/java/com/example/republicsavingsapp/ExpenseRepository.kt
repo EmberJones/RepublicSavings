@@ -1,7 +1,8 @@
 package com.example.republicsavingsapp
 
-class ExpenseRepository(private val expensesDAO: ExpensesDAO) {
+import android.app.Activity
 
+class ExpenseRepository(private val expensesDAO: ExpensesDAO) {
     suspend fun addExpense(
         name: String, amount: String, category: String,     // necessary parameters
         description: String? = null, photoFilePath: String? = null, date: Long = System.currentTimeMillis()     // not entirely necessary

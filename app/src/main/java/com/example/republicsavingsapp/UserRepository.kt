@@ -15,4 +15,18 @@ class UserRepository(private val expensesDAO: ExpensesDAO) {
     suspend fun getUsers() : List<Users> {
         return expensesDAO.getAllUsers()
     }
+
+    suspend fun isCorrectUsernameAndPassword(name: String, pass: String) : Boolean {
+        var allUsers = expensesDAO.getAllUsers()
+
+        for (user in allUsers)
+        {
+            if (user.userName == name && user.userPassword == pass)
+            {
+                return true
+            }
+        }
+
+        return false
+    }
 }
