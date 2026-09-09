@@ -2,4 +2,12 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="evergreen">#132A13</color>
+    <color name="huntergreen">#31572C</color>
+    <color name="fern">#4F772D</color>
+    <color name="schoolbus">#FDC500</color>
+    <color name="gold">#FFD500</color>
+
+<!--    colours are placeholder, bold just for visual clarity-->
 </resources>
