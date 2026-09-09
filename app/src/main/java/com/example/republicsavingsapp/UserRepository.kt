@@ -17,7 +17,7 @@ class UserRepository(private val expensesDAO: ExpensesDAO) {
     }
 
     suspend fun isCorrectUsernameAndPassword(name: String, pass: String) : Boolean {
-        var allUsers = expensesDAO.getAllUsers()
+        val allUsers = expensesDAO.getAllUsers()
 
         for (user in allUsers)
         {
@@ -25,6 +25,21 @@ class UserRepository(private val expensesDAO: ExpensesDAO) {
             {
                 return true
             }
+        }
+
+        return false
+    }
+
+    // Does user exist?
+
+    // used to determine if the username entered has used this app before? if false, prompt to make account
+    suspend fun isPreExistingUsername(name: String): Boolean {
+        val allUsers = expensesDAO.getAllUsers()
+
+        for (user in allUsers)
+        {
+            if (user.userName == name)
+                return true
         }
 
         return false

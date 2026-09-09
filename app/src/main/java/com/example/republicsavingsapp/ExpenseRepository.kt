@@ -1,7 +1,5 @@
 package com.example.republicsavingsapp
 
-import android.app.Activity
-
 class ExpenseRepository(private val expensesDAO: ExpensesDAO) {
     suspend fun addExpense(
         name: String, amount: String, category: String,     // necessary parameters
@@ -27,5 +25,18 @@ class ExpenseRepository(private val expensesDAO: ExpensesDAO) {
         {
             expensesDAO.getAllFromUser(CurrentUser.userID)
         }
+    }
+
+    suspend fun getExpensesUpTo(date: Long): List<Expenses> {
+        return expensesDAO.getAllExpensesUpTo(date)
+    }
+
+    suspend fun getAllExpensesAfter(date: Long): List<Expenses> {
+        return expensesDAO.getAllExpensesSince(date)
+    }
+
+    suspend fun getAllExpensesBetween(startDate: Long, endDate: Long): List<Expenses>
+    {
+        return expensesDAO.getAllExpensesBetween(startDate, endDate)
     }
 }
