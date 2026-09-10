@@ -1,6 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.home.HomeFragment">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <!-- Greeting -->
+        <TextView
+            android:id="@+id/greetingLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Good morning"
+            android:textSize="13sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Placeholder name, set programmatically -->
+        <TextView
+            android:id="@+id/greetingName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text=""
+            tools:text="Jane"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/greetingLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/addButton" />
+
+        <!-- Add button (top right) -->
+        <ImageButton
+            android:id="@+id/addButton"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_circle_button"
+            android:src="@drawable/ic_add"
+            android:contentDescription="Add"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/greetingName"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Budget summary card -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/budgetCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:padding="18dp"
+            app:layout_constraintTop_toBottomOf="@id/greetingName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/budgetProgress"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:indicatorSize="80dp"
+                app:trackThickness="8dp"
+                app:indicatorDirectionCircular="clockwise"
+                android:max="100"
+                android:progress="64"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- Percentage label, centered on top of the ring -->
+            <TextView
+                android:id="@+id/budgetPercentText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="64%"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="@id/budgetProgress"
+                app:layout_constraintBottom_toBottomOf="@id/budgetProgress"
+                app:layout_constraintStart_toStartOf="@id/budgetProgress"
+                app:layout_constraintEnd_toEndOf="@id/budgetProgress" />
+
+            <TextView
+                android:id="@+id/budgetUsedLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="used"
+                android:textSize="11sp"
+                app:layout_constraintTop_toBottomOf="@id/budgetPercentText"
+                app:layout_constraintStart_toStartOf="@id/budgetProgress"
+                app:layout_constraintEnd_toEndOf="@id/budgetProgress" />
+
+            <TextView
+                android:id="@+id/monthlyBudgetLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Monthly budget"
+                android:textSize="13sp"
+                app:layout_constraintTop_toTopOf="@id/budgetProgress"
+                app:layout_constraintStart_toEndOf="@id/budgetProgress"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/budgetAmountText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="R12,800 of R20,000"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/monthlyBudgetLabel"
+                app:layout_constraintStart_toStartOf="@id/monthlyBudgetLabel"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/budgetRemainingText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="R7,200 left this month"
+                android:textSize="12sp"
+                app:layout_constraintTop_toBottomOf="@id/budgetAmountText"
+                app:layout_constraintStart_toStartOf="@id/monthlyBudgetLabel"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Section header -->
+        <TextView
+            android:id="@+id/byCategoryLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="BY CATEGORY"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/budgetCard"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Category list -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/categoryRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="16dp"
+            android:nestedScrollingEnabled="false"
+            tools:listitem="@layout/item_category"
+            tools:itemCount="5"
+            app:layout_constraintTop_toBottomOf="@id/byCategoryLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -3,11 +3,17 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="evergreen">#132A13</color>
-    <color name="huntergreen">#31572C</color>
-    <color name="fern">#4F772D</color>
-    <color name="schoolbus">#FDC500</color>
-    <color name="gold">#FFD500</color>
+    <color name="green_1">#132A13</color>
+    <color name="green_2">#31572C</color>
+    <color name="green_3">#4F772D</color>
+    <color name="yellow_1">#FDC500</color>
+    <color name="yellow_2">#FFD500</color>
+
+    <color name="green_4">#606C38</color>
+    <color name="green_5">#283618</color>
+    <color name="beige">#FEFAE0</color>
+    <color name="orange_1">#DDA15E</color>
+    <color name="orange_2">#BC6C25</color>
 
 <!--    colours are placeholder, bold just for visual clarity-->
 </resources>

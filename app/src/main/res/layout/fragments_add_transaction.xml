@@ -1,6 +1,297 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.transaction.AddTransactionFragment">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <!-- Close button -->
+        <ImageButton
+            android:id="@+id/closeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_close"
+            android:contentDescription="Close"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/screenTitle"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/screenTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add transaction"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Save (text action) -->
+        <TextView
+            android:id="@+id/saveTextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="4dp"
+            app:layout_constraintTop_toTopOf="@id/screenTitle"
+            app:layout_constraintBottom_toBottomOf="@id/screenTitle"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Category label -->
+        <TextView
+            android:id="@+id/categoryLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="Category"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/screenTitle"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Category dropdown -->
+        <Spinner
+            android:id="@+id/categorySpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:minHeight="48dp"
+            android:padding="14dp"
+            app:layout_constraintTop_toBottomOf="@id/categoryLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Transaction name label -->
+        <TextView
+            android:id="@+id/transactionNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Transaction name"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/categorySpinner"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Transaction name input -->
+        <EditText
+            android:id="@+id/transactionNameInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="e.g. Checkers"
+            android:inputType="text"
+            android:padding="14dp"
+            app:layout_constraintTop_toBottomOf="@id/transactionNameLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Amount label -->
+        <TextView
+            android:id="@+id/amountLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Amount"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/transactionNameInput"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Amount input row (currency prefix + number) -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/amountInputRow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:padding="14dp"
+            app:layout_constraintTop_toBottomOf="@id/amountLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/currencyPrefix"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="R"
+                android:textSize="15sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/amountInput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@null"
+                android:hint="0.00"
+                android:inputType="numberDecimal"
+                android:padding="0dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/currencyPrefix"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Include in budget card -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/includeInBudgetCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:padding="14dp"
+            app:layout_constraintTop_toBottomOf="@id/amountInputRow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/includeInBudgetTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Include in monthly budget"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/includeInBudgetSwitch" />
+
+            <TextView
+                android:id="@+id/includeInBudgetSubtitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Counts toward your category limit"
+                android:textSize="12sp"
+                app:layout_constraintTop_toBottomOf="@id/includeInBudgetTitle"
+                app:layout_constraintStart_toStartOf="@id/includeInBudgetTitle"
+                app:layout_constraintEnd_toStartOf="@id/includeInBudgetSwitch" />
+
+            <Switch
+                android:id="@+id/includeInBudgetSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Description label -->
+        <TextView
+            android:id="@+id/descriptionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Description (optional)"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/includeInBudgetCard"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Description input -->
+        <EditText
+            android:id="@+id/descriptionInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="top|start"
+            android:hint="Add a note about this transaction"
+            android:inputType="textMultiLine"
+            android:minLines="2"
+            android:padding="14dp"
+            app:layout_constraintTop_toBottomOf="@id/descriptionLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Receipt photo label -->
+        <TextView
+            android:id="@+id/receiptPhotoLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Receipt photo (optional)"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/descriptionInput"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Receipt photo tap target -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/receiptPhotoTarget"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_dashed_box"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintTop_toBottomOf="@id/receiptPhotoLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/receiptCameraIcon"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_camera"
+                android:contentDescription="Attach photo"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/receiptPhotoHint"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/receiptPhotoHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Tap to attach a photo"
+                android:textSize="12sp"
+                app:layout_constraintTop_toBottomOf="@id/receiptCameraIcon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Populated with attached image at runtime; hidden until a photo is set -->
+            <ImageView
+                android:id="@+id/receiptPreviewImage"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                android:contentDescription="Receipt preview"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Save transaction button -->
+        <Button
+            android:id="@+id/saveTransactionButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="20dp"
+            android:text="Save transaction"
+            app:layout_constraintTop_toBottomOf="@id/receiptPhotoTarget"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

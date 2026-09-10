@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.RepublicSavingsApp" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/black</item>
-        <item name="colorSurface">@color/schoolbus</item>
-        <item name="colorOnSurface">@color/gold</item>
+        <item name="colorSurface">@color/orange_1</item>
+        <item name="colorOnSurface">@color/orange_2</item>
 
     </style>
 </resources>
