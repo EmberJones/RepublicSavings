@@ -59,4 +59,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation("androidx.biometric:biometric:1.1.0")
+
+
 }

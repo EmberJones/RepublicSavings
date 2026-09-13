@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Welcome back"
+        android:text="@string/welcome"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/appIcon"
@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Log in to keep track of your spending"
+        android:text="Sign Up to Start Saving Your Money"
         android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@id/welcomeTitle"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Email"
+        android:text="@string/prompt_email"
         android:textSize="13sp"
         app:layout_constraintTop_toBottomOf="@id/welcomeSubtitle"
         app:layout_constraintStart_toStartOf="parent" />
@@ -61,7 +61,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="name@email.com"
+        android:hint="@string/prompt_email"
         android:inputType="textEmailAddress"
         android:autofillHints="username"
         android:padding="14dp"
@@ -75,7 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Password"
+        android:text="@string/prompt_password"
         android:textSize="13sp"
         app:layout_constraintTop_toBottomOf="@id/username"
         app:layout_constraintStart_toStartOf="parent" />
@@ -86,7 +86,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Enter your password"
+        android:hint="@string/prompt_password"
         android:inputType="textPassword"
         android:autofillHints="password"
         android:padding="14dp"
@@ -97,15 +97,15 @@
     <!-- Forgot password -->
     <TextView
         android:id="@+id/forgotPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="113dp"
+        android:layout_height="20dp"
         android:layout_marginTop="12dp"
-        android:text="Forgot password?"
-        android:textSize="13sp"
         android:clickable="true"
         android:focusable="true"
-        app:layout_constraintTop_toBottomOf="@id/password"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:text="Forgot password?"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/password" />
 
     <!-- Login button -->
     <Button
@@ -113,7 +113,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Log in"
+        android:text="Login"
         android:enabled="false"
         app:layout_constraintTop_toBottomOf="@id/forgotPassword"
         app:layout_constraintStart_toStartOf="parent"

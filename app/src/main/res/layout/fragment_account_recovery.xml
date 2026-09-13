@@ -71,7 +71,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="name@email.com"
+        android:hint="@string/prompt_email"
         android:inputType="textEmailAddress"
         android:autofillHints="emailAddress"
         android:padding="14dp"

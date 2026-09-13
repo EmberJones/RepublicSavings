@@ -1,6 +1,5 @@
 package com.example.republicsavingsapp
 
-import android.app.Activity
 import android.app.Application
 
 class RepublicSavingsApp : Application() {
