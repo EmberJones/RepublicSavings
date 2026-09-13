@@ -1,17 +1,10 @@
-<style name="Base.Theme.RepublicSavingsApp" parent="Theme.Material3.DayNight.NoActionBar">
-    <item name="colorPrimary">@color/white</item>
-    <item name="colorOnPrimary">@color/green_5</item>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.RepublicSavingsApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorSurface">@color/green_4</item>
+        <item name="colorOnSurface">@color/green_5</item>
+    </style>
 
-    <item name="colorSecondary">@color/green_3</item>
-    <item name="colorOnSecondary">@color/white</item>
-
-    <item name="colorSurface">@color/beige</item>
-    <item name="colorOnSurface">@color/green_5</item>
-    <item name="colorSurfaceVariant">@color/green_1</item>
-    <item name="colorOnSurfaceVariant">@color/beige</item>
-
-    <item name="colorBackground">@color/beige</item>
-    <item name="colorOnBackground">@color/green_5</item>
-
-    <item name="colorOutline">@color/green_3</item>
-</style>
+    <style name="Theme.RepublicSavingsApp" parent="Base.Theme.RepublicSavingsApp" />
+</resources>
