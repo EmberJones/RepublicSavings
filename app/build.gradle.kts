@@ -52,9 +52,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
 
     implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
-    implementation(libs.androidx.sqlite.framework)
 
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation("androidx.biometric:biometric:1.1.0")

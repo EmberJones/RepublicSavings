@@ -1,7 +1,7 @@
 package com.example.republicsavingsapp
-import androidx.room.RoomDatabase
-import androidx.room.Database
-import androidx.room.Room
+import androidx.room3.RoomDatabase
+import androidx.room3.Database
+import androidx.room3.Room
 import androidx.sqlite.driver.AndroidSQLiteDriver
 import com.example.republicsavingsapp.ui.categories.Category
 
