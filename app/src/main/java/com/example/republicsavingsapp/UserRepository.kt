@@ -2,17 +2,22 @@ package com.example.republicsavingsapp
 
 class UserRepository(private val expensesDAO: ExpensesDAO) {
 
-    suspend fun addUser(name: String, pass: String) : Long
+    suspend fun addUser(name: String, surname: String, pass: String, curr : String, mail: String, biomet: Boolean) : Long
     {
-        val newUser = Users(
+        val newUser = User(
+            userID = 0,
             userName = name,
+            userSurname = surname,
+            currency = curr,
+            email = mail,
+            biometricEnabled = biomet,
             userPassword = pass
         )
 
         return expensesDAO.AddUser(newUser)
     }
 
-    suspend fun getUsers() : List<Users> {
+    suspend fun getUsers() : List<User> {
         return expensesDAO.getAllUsers()
     }
 

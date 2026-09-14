@@ -57,7 +57,7 @@ class SecuritySettings : Fragment(){
             userName = viewModel.firstName,
             userSurname = viewModel.surname,
             email = viewModel.email,
-            userID = viewModel.username,
+            userID = viewModel.username.toInt(),
             userPassword = viewModel.password,
             currency = viewModel.currency,
             biometricEnabled = viewModel.biometricEnabled

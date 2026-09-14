@@ -9,7 +9,7 @@ class RepublicSavingsApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        expensesDAO = AppDatabase.getDatabase(applicationContext).ExpensesDAO()
+        expensesDAO = AppDatabase.getDatabase(applicationContext).expensesDAO()
         expenseRepository = ExpenseRepository(expensesDAO)
         userRepository = UserRepository(expensesDAO)
     }

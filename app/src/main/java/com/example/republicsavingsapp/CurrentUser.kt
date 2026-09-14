@@ -10,7 +10,7 @@ object CurrentUser {
     val isLoggedIn: Boolean         // checking if logged in or out
         get() = userID != -1
 
-    fun setUser(user: Users)        // use to log in
+    fun setUser(user: User)        // use to log in
     {
         userID = user.userID
         userName = user.userName
