@@ -5,6 +5,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.fragment.NavHostFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,6 +17,25 @@ class MainActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.navHostFragment) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
+        bottomNav.setOnItemSelectedListener { item ->
+            val destinationId = when (item.itemId) {
+                R.id.nav_home -> R.id.homeFragment
+                R.id.nav_wallet -> R.id.expenseFragment
+                R.id.nav_add -> R.id.addTransactionFragment
+                R.id.nav_categories -> R.id.categoriesFragment
+                R.id.nav_settings -> R.id.settingsFragment
+                else -> return@setOnItemSelectedListener false
+            }
+            if (navController.currentDestination?.id != destinationId) {
+                navController.navigate(destinationId)
+            }
+            true
         }
     }
 }
