@@ -1,6 +1,7 @@
 package com.example.republicsavingsapp
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 
 class RepublicSavingsApp : Application() {
     private lateinit var expensesDAO: ExpensesDAO

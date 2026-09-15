@@ -39,4 +39,8 @@ class ExpenseRepository(private val expensesDAO: ExpensesDAO) {
     {
         return expensesDAO.getAllExpensesBetween(startDate, endDate)
     }
+
+    suspend fun getAllUniqueCategories(): List<String> {
+        return expensesDAO.getAllFromUser(CurrentUser.userID).map { it.expenseCategory }.distinct()
+    }
 }
