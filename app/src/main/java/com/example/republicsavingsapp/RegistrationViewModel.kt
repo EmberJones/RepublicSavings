@@ -2,7 +2,7 @@ package com.example.republicsavingsapp
 
 import androidx.lifecycle.ViewModel
 
-class RegistrationViewModel : ViewModel() {
+class RegistrationViewModel {
     var firstName: String = ""
     var surname: String = ""
     var email: String = ""

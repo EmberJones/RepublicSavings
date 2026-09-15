@@ -1,19 +1,18 @@
 package com.example.republicsavingsapp
-import androidx.room3.RoomDatabase
 import androidx.room3.Database
+import androidx.room3.RoomDatabase
 import androidx.room3.Room
 import androidx.sqlite.driver.AndroidSQLiteDriver
-import com.example.republicsavingsapp.ui.categories.Category
 
 @Database(
-    entities = [User::class, Expenses::class, Category::class],
-    version = 3, //was 2, added category table
+    entities = [User::class, Expenses::class],
+    version = 2, //was 1
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDAO(): UserDAO
     abstract fun expensesDAO(): ExpensesDAO
-    abstract fun categoryDAO(): CategoryDAO
+
     companion object {
         @Volatile
         private var Instance: AppDatabase? = null
