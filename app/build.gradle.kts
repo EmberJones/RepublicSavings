@@ -5,11 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.republicsavingsapp"
-    compileSdk {
-        version = release(37) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.example.republicsavingsapp"
@@ -55,11 +51,9 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
 
-    implementation(libs.androidx.room3.compiler)
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
+
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation("androidx.biometric:biometric:1.1.0")
-
-
 }
