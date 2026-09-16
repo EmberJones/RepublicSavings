@@ -19,6 +19,7 @@
             android:layout_marginTop="16dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Back"
+            app:tint="?attr/colorOnSurface"
             android:src="@drawable/ic_arrow_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -88,6 +89,7 @@
                 android:layout_height="24dp"
                 android:contentDescription="Biometric icon"
                 android:src="@drawable/ic_fingerprint"
+                app:tint="?attr/colorOnSurface"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -142,6 +144,7 @@
                 android:layout_height="16dp"
                 android:contentDescription="Info"
                 android:src="@drawable/ic_info"
+                app:tint="?attr/colorOnSurface"
                 app:layout_constraintBottom_toBottomOf="@id/infoText"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

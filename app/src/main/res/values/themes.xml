@@ -1,9 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.RepublicSavingsApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorSurface">@color/green_4</item>
+
+        <!-- Buttons -->
+        <item name="colorPrimary">@color/green_5</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Background -->
+        <item name="colorSurface">@color/white</item>
         <item name="colorOnSurface">@color/green_5</item>
+        <item name="android:colorBackground">@color/white</item>
+        <item name="colorOnBackground">@color/green_5</item>
+
+        <!-- Other accents -->
+        <item name="colorSecondary">@color/green_4</item>
+        <item name="colorOnSecondary">@color/white</item>
+
     </style>
 
     <style name="Theme.RepublicSavingsApp" parent="Base.Theme.RepublicSavingsApp" />

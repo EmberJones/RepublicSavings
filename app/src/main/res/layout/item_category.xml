@@ -22,6 +22,7 @@
             android:src="@drawable/ic_category_placeholder"
             android:contentDescription="Category icon"
             app:layout_constraintTop_toTopOf="parent"
+            app:tint="?attr/colorOnSurface"
             app:layout_constraintStart_toStartOf="parent" />
 
         <!-- Category name -->

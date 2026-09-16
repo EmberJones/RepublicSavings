@@ -16,6 +16,7 @@
         android:layout_marginTop="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Back"
+        app:tint="?attr/colorOnSurface"
         android:src="@drawable/ic_arrow_back"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -129,6 +130,7 @@
                 android:layout_width="24dp"
                 android:layout_height="wrap_content"
                 android:text="R"
+                app:tint="?attr/colorOnSurface"
                 android:textStyle="bold" />
 
             <TextView
@@ -142,6 +144,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/ic_check"
+                app:tint="?attr/colorOnSurface"
                 android:contentDescription="Selected" />
         </LinearLayout>
 
@@ -161,6 +164,7 @@
                 android:layout_width="24dp"
                 android:layout_height="wrap_content"
                 android:text="$"
+                app:tint="?attr/colorOnSurface"
                 android:textStyle="bold" />
 
             <TextView
@@ -193,6 +197,7 @@
                 android:layout_width="24dp"
                 android:layout_height="wrap_content"
                 android:text="€"
+                app:tint="?attr/colorOnSurface"
                 android:textStyle="bold" />
 
             <TextView

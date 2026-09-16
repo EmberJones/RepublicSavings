@@ -76,6 +76,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                app:tint="?attr/colorOnSurface"
                 android:background="@drawable/ic_lock" />
 
             <View
@@ -83,6 +84,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                app:tint="?attr/colorOnSurface"
                 android:background="@drawable/ic_lock" />
 
             <View
@@ -90,6 +92,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                app:tint="?attr/colorOnSurface"
                 android:background="@drawable/ic_lock" />
 
             <View
@@ -97,6 +100,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                app:tint="?attr/colorOnSurface"
                 android:background="@drawable/ic_lock" />
 
         </LinearLayout>

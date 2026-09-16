@@ -20,6 +20,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_close"
             android:contentDescription="Close"
+            app:tint="?attr/colorOnSurface"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/screenTitle"
             app:layout_constraintStart_toStartOf="parent" />
@@ -126,6 +127,7 @@
                 android:layout_height="wrap_content"
                 android:text="R"
                 android:textSize="15sp"
+                app:tint="?attr/colorOnSurface"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -236,6 +238,7 @@
             android:background="@drawable/ic_bg_border"
             android:clickable="true"
             android:focusable="true"
+            app:tint="?attr/colorOnSurface"
             app:layout_constraintTop_toBottomOf="@id/receiptPhotoLabel"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
@@ -250,6 +253,7 @@
                 app:layout_constraintBottom_toTopOf="@id/receiptPhotoHint"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:tint="?attr/colorOnSurface"
                 app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
