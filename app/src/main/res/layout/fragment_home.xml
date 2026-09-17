@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:text=""
-            tools:text="Jane"
+            tools:text="Jane Doe"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/greetingLabel"
@@ -89,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="used"
+                android:text="spent"
                 android:textSize="11sp"
                 app:layout_constraintTop_toBottomOf="@id/budgetPercentText"
                 app:layout_constraintStart_toStartOf="@id/budgetProgress"
@@ -111,7 +111,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="R12,800 of R20,000"
+                android:text="R12,800 of R20,000 (Placeholder)"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/monthlyBudgetLabel"
@@ -123,7 +123,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="R7,200 left this month"
+                android:text="R7,200 left this month (Placeholder)"
                 android:textSize="12sp"
                 app:layout_constraintTop_toBottomOf="@id/budgetAmountText"
                 app:layout_constraintStart_toStartOf="@id/monthlyBudgetLabel"
@@ -143,20 +143,17 @@
             app:layout_constraintTop_toBottomOf="@id/budgetCard"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <!-- Category list -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/categoryRecyclerView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="16dp"
-            android:nestedScrollingEnabled="false"
-            tools:listitem="@layout/item_category"
-            tools:itemCount="5"
+        <!--Bar Chart -->
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/categoryBarChart"
+            android:layout_width="350dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="25dp"
             app:layout_constraintTop_toBottomOf="@id/byCategoryLabel"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

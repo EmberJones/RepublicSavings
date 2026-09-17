@@ -27,6 +27,13 @@ interface ExpensesDAO {
     @Query("SELECT * FROM expenses WHERE expenseDate > :firstDate AND expenseDate < :lastDate ORDER BY expenseDate ASC")
     suspend fun getAllExpensesBetween(firstDate: Long, lastDate: Long): List<Expenses>
 
+    @Query("""
+    SELECT expenseCategory AS category, SUM(CAST(expenseAmount AS REAL)) AS total
+    FROM expenses
+    WHERE userID = :activeUserID AND expenseDate BETWEEN :startDate AND :endDate
+    GROUP BY expenseCategory
+""")
+    suspend fun getTotalsByCategory(activeUserID: Int, startDate: Long, endDate: Long): List<CategoryTotal>
     @Query("SELECT * FROM expenses WHERE userID = :activeUserID ORDER BY uploaded DESC")
     suspend fun getAllFromUser(activeUserID: Int): List<Expenses>
 

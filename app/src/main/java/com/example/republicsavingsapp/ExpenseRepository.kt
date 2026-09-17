@@ -43,4 +43,8 @@ class ExpenseRepository(private val expensesDAO: ExpensesDAO) {
     suspend fun getAllUniqueCategories(): List<String> {
         return expensesDAO.getAllFromUser(CurrentUser.userID).map { it.expenseCategory }.distinct()
     }
+
+    suspend fun getTotalsByCategory(startDate: Long, endDate: Long): List<CategoryTotal> {
+        return expensesDAO.getTotalsByCategory(CurrentUser.userID, startDate, endDate)
+    }
 }
