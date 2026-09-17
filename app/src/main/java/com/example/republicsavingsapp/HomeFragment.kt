@@ -1,4 +1,4 @@
-package com.example.republicsavingsapp.ui.home
+package com.example.republicsavingsapp
 
 import android.os.Bundle
 import android.view.View
@@ -6,9 +6,6 @@ import androidx.fragment.app.Fragment
 import com.example.republicsavingsapp.databinding.FragmentHomeBinding
 import java.util.Calendar
 import androidx.lifecycle.lifecycleScope
-import com.example.republicsavingsapp.CategoryTotal
-import com.example.republicsavingsapp.CurrentUser
-import com.example.republicsavingsapp.RepublicSavingsApp
 import com.example.republicsavingsapp.ui.categories.Category
 import kotlinx.coroutines.launch
 import java.util.Locale
