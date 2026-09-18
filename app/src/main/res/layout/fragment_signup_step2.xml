@@ -104,8 +104,8 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Currency option list -->
-    <LinearLayout
-        android:id="@+id/currencyOptionList"
+    <RadioGroup
+        android:id="@+id/currencyOptionGroup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -114,108 +114,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Option: South African rand (selected) -->
-        <LinearLayout
+        <!-- Option: South African rand -->
+        <RadioButton
             android:id="@+id/optionZar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
+            android:checked="true"
+            android:text="R   South African Rand"
+            android:textSize="14sp"
             android:padding="14dp"
-            android:clickable="true"
-            android:focusable="true">
-
-            <TextView
-                android:layout_width="24dp"
-                android:layout_height="wrap_content"
-                android:text="R"
-                app:tint="?attr/colorOnSurface"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="South African rand" />
-
-            <ImageView
-                android:id="@+id/optionZarCheck"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_check"
-                app:tint="?attr/colorOnSurface"
-                android:contentDescription="Selected" />
-        </LinearLayout>
+            android:buttonTint="?attr/colorOnSurface" />
 
         <!-- Option: US dollar -->
-        <LinearLayout
+        <RadioButton
             android:id="@+id/optionUsd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
+            android:text="$   US dollar"
+            android:textSize="14sp"
             android:padding="14dp"
-            android:clickable="true"
-            android:focusable="true">
-
-            <TextView
-                android:layout_width="24dp"
-                android:layout_height="wrap_content"
-                android:text="$"
-                app:tint="?attr/colorOnSurface"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="US dollar" />
-
-            <ImageView
-                android:id="@+id/optionUsdCheck"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_check"
-                android:visibility="invisible"
-                android:contentDescription="Selected" />
-        </LinearLayout>
+            android:buttonTint="?attr/colorOnSurface" />
 
         <!-- Option: Euro -->
-        <LinearLayout
+        <RadioButton
             android:id="@+id/optionEur"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
+            android:text="€   Euro"
+            android:textSize="14sp"
             android:padding="14dp"
-            android:clickable="true"
-            android:focusable="true">
+            android:buttonTint="?attr/colorOnSurface" />
 
-            <TextView
-                android:layout_width="24dp"
-                android:layout_height="wrap_content"
-                android:text="€"
-                app:tint="?attr/colorOnSurface"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Euro" />
-
-            <ImageView
-                android:id="@+id/optionEurCheck"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_check"
-                android:visibility="invisible"
-                android:contentDescription="Selected" />
-        </LinearLayout>
-
-    </LinearLayout>
+    </RadioGroup>
 
     <!-- Continue button -->
     <Button
