@@ -11,6 +11,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        CurrentUser.setUser(User(
+            userID = 1, userName = "Jonny",
+            userSurname = "Test",
+            email = "JonnyTest@hotmail.com",
+            userPassword = "guest123",
+            currency = "R",
+            biometricEnabled = false
+        ))
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

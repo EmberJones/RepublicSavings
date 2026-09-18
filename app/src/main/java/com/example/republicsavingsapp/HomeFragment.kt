@@ -1,24 +1,34 @@
-package com.example.republicsavingsapp
+package com.example.republicsavingsapp.ui.home
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.republicsavingsapp.databinding.FragmentHomeBinding
-import java.util.Calendar
 import androidx.lifecycle.lifecycleScope
+import com.example.republicsavingsapp.CategoryTotal
+import com.example.republicsavingsapp.CurrentUser
+import com.example.republicsavingsapp.RepublicSavingsApp
+import com.example.republicsavingsapp.databinding.FragmentHomeBinding
 import com.example.republicsavingsapp.ui.categories.Category
-import kotlinx.coroutines.launch
-import java.util.Locale
-import com.github.mikephil.charting.utils.ColorTemplate
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.utils.ColorTemplate
+import kotlinx.coroutines.launch
+import java.util.Calendar
+import java.util.Locale
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    fun onCreateView(view: View, savedInstanceState: Bundle?) {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadBudgetSummary()
     }
@@ -43,6 +53,7 @@ class HomeFragment : Fragment() {
             setupCategoryBarChart(categories, totals)
         }
     }
+
     private fun setupCategoryBarChart(categories: List<Category>, totals: List<CategoryTotal>) {
         val spentByName = totals.associate { it.category to it.total }
         val entries = categories.mapIndexed { index, cat ->
@@ -70,9 +81,10 @@ class HomeFragment : Fragment() {
             }
             setFitBars(true)
             animateY(600)
-            invalidate()   //this redraws the chart
+            invalidate()
         }
     }
+
     private fun currentMonthRange(): Pair<Long, Long> {
         val cal = Calendar.getInstance()
         cal.set(Calendar.DAY_OF_MONTH, 1)
@@ -82,5 +94,6 @@ class HomeFragment : Fragment() {
         cal.add(Calendar.MONTH, 1)
         return start to (cal.timeInMillis - 1)
     }
+
     override fun onDestroyView() { super.onDestroyView(); _binding = null }
 }
