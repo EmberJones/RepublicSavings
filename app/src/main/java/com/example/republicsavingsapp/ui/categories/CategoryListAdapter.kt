@@ -3,6 +3,7 @@ package com.example.republicsavingsapp.ui.categories
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.republicsavingsapp.CurrencyFormatter
 import com.example.republicsavingsapp.R
 import com.example.republicsavingsapp.databinding.ItemCategoryRowBinding
 import java.util.Locale
@@ -24,7 +25,7 @@ class CategoryListAdapter(private var categories: List<Category>) :
     class ViewHolder(private val binding: ItemCategoryRowBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(category: Category) {
             binding.rowCategoryName.text = category.categoryName
-            binding.rowCategoryMax.text = String.format(Locale.getDefault(), "R%,.2f monthly max", category.monthlyMax)
+            binding.rowCategoryMax.text = "${CurrencyFormatter.format(category.monthlyMax)} monthly max"
             binding.rowCategoryIcon.setImageResource(when (category.categoryIcon) {
                 "food" -> R.drawable.ic_food
                 "heart" -> R.drawable.ic_heart

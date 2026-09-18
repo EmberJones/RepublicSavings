@@ -14,7 +14,6 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import kotlinx.coroutines.launch
 import java.util.Calendar
-import java.util.Locale
 import kotlin.collections.map
 
 class HomeFragment : Fragment() {
@@ -44,8 +43,8 @@ class HomeFragment : Fragment() {
 
             binding.budgetProgress.progress = percent
             binding.budgetPercentText.text = "$percent%"
-            binding.budgetAmountText.text = String.format(Locale.getDefault(), "R%,.0f of R%,.0f", spent, budget)
-            binding.budgetRemainingText.text = String.format(Locale.getDefault(), "R%,.0f left this month", (budget - spent).coerceAtLeast(0.0))
+            binding.budgetAmountText.text = "${CurrencyFormatter.formatWhole(spent)} of ${CurrencyFormatter.formatWhole(budget)}"
+            binding.budgetRemainingText.text = "${CurrencyFormatter.formatWhole((budget - spent).coerceAtLeast(0.0))} left this month"
             binding.greetingName.text = CurrentUser.userName
 
             setupCategoryBarChart(categories, totals)
@@ -62,6 +61,11 @@ class HomeFragment : Fragment() {
         val dataSet = BarDataSet(entries, "Spent").apply {
             colors = ColorTemplate.MATERIAL_COLORS.toList()
             valueTextSize = 10f
+            valueFormatter = object : com.github.mikephil.charting.formatter.ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return CurrencyFormatter.formatWhole(value.toDouble())
+                }
+            }
         }
 
         binding.categoryBarChart.apply {

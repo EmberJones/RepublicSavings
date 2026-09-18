@@ -1,6 +1,7 @@
 package com.example.republicsavingsapp
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 
 class RepublicSavingsApp : Application() {
     private lateinit var expensesDAO: ExpensesDAO
@@ -11,6 +12,11 @@ class RepublicSavingsApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        val prefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        val savedThemeMode = prefs.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        AppCompatDelegate.setDefaultNightMode(savedThemeMode)
+
         val db = AppDatabase.getDatabase(applicationContext)
         expensesDAO = db.expensesDAO()
         categoryDAO = db.categoryDAO()

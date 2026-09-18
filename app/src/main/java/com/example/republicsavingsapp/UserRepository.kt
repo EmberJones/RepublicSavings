@@ -20,6 +20,13 @@ class UserRepository(private val expensesDAO: ExpensesDAO) {
     suspend fun getUsers() : List<User> {
         return expensesDAO.getAllUsers()
     }
+    suspend fun getUserById(userID: Int): User? {
+        return expensesDAO.getUserById(userID)
+    }
+
+    suspend fun updateCurrency(userID: Int, currency: String) {
+        expensesDAO.updateCurrency(userID, currency)
+    }
 
     suspend fun isCorrectUsernameAndPassword(name: String, pass: String) : Boolean {
         val allUsers = expensesDAO.getAllUsers()

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.republicsavingsapp.CategoryTotal
+import com.example.republicsavingsapp.CurrencyFormatter
 import com.example.republicsavingsapp.RepublicSavingsApp
 import com.example.republicsavingsapp.databinding.FragmentExpenseBinding
 import com.github.mikephil.charting.data.PieData
@@ -40,7 +41,7 @@ class ExpenseFragment : Fragment() {
             cal.add(Calendar.MONTH, -1)
             val totals = app.expenseRepository.getTotalsByCategory(cal.timeInMillis, end)
 
-            binding.totalAmountText.text = String.format(Locale.getDefault(), "R%,.0f", totals.sumOf { it.total })
+            binding.totalAmountText.text = CurrencyFormatter.formatWhole(totals.sumOf { it.total })
             setupPieChart(totals)
         }
     }

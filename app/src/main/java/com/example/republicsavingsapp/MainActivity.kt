@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
             userSurname = "Test",
             email = "JonnyTest@hotmail.com",
             userPassword = "guest123",
-            currency = "R",
+            currency = "ZAR",
             biometricEnabled = false
         ))
         enableEdgeToEdge()

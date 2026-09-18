@@ -7,18 +7,25 @@ object CurrentUser {
     var userName: String = ""
         private set
 
-    val isLoggedIn: Boolean         // checking if logged in or out
+    var currency: String = "ZAR"
+        private set
+
+    val isLoggedIn: Boolean
         get() = userID != -1
 
-    fun setUser(user: User)        // use to log in
-    {
+    fun setUser(user: User) {
         userID = user.userID
         userName = user.userName
+        currency = user.currency
     }
 
-    fun clear()             // use to log out
-    {
+    fun updateCurrency(newCurrency: String) {
+        currency = newCurrency
+    }
+
+    fun clear() {
         userID = -1
         userName = ""
+        currency = "ZAR"
     }
 }

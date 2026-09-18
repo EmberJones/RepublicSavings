@@ -12,6 +12,12 @@ interface ExpensesDAO {
     @Insert
     suspend fun AddUser(users: User): Long
 
+    @Query("SELECT * FROM users WHERE userID = :userID LIMIT 1")
+    suspend fun getUserById(userID: Int): User?
+
+    @Query("UPDATE users SET currency = :currency WHERE userID = :userID")
+    suspend fun updateCurrency(userID: Int, currency: String)
+
     @Query("SELECT * FROM expenses WHERE userID = :activeUserID AND expenseCategory = :category ORDER BY uploaded DESC")
     suspend fun getAllFromUserInCategory(activeUserID: Int, category: String): List<Expenses>
 
