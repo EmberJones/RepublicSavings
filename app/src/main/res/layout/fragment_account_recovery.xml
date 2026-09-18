@@ -17,6 +17,7 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Back"
         android:src="@drawable/ic_arrow_back"
+        app:tint="?attr/colorOnSurface"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -27,6 +28,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/ic_lock"
+        app:tint="?attr/colorOnSurface"
         app:layout_constraintTop_toBottomOf="@id/backButton"
         app:layout_constraintStart_toStartOf="parent" />
 

@@ -68,45 +68,42 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
-                <Button
+                <TextView
                     android:id="@+id/themeOptionLight"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:clickable="true"
-                    android:focusable="true"
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="Light"
-                    android:textColor="#000000"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:clickable="true"
+                    android:focusable="true" />
 
-                <Button
+                <TextView
                     android:id="@+id/themeOptionDark"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:clickable="true"
-                    android:focusable="true"
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="Dark"
-                    android:textColor="#000000"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    android:focusable="true" />
 
-                <Button
+                <TextView
                     android:id="@+id/themeOptionSystem"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:clickable="true"
-                    android:focusable="true"
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="System"
-                    android:textColor="#000000"
                     android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:clickable="true"
+                    android:focusable="true" />
 
             </LinearLayout>
 
@@ -153,6 +150,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_currency"
+                    app:tint="?attr/colorOnSurface"
                     android:contentDescription="Currency" />
 
                 <TextView
@@ -178,6 +176,7 @@
                     android:layout_height="18dp"
                     android:layout_marginStart="6dp"
                     android:src="@drawable/ic_chevron_down"
+                    app:tint="?attr/colorOnSurface"
                     android:contentDescription="Expand" />
 
             </LinearLayout>
@@ -211,6 +210,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_notifications"
+                    app:tint="?attr/colorOnSurface"
                     android:contentDescription="Notifications" />
 
                 <TextView
@@ -226,6 +226,7 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:src="@drawable/ic_chevron_right"
+                    app:tint="?attr/colorOnSurface"
                     android:contentDescription="Open" />
 
             </LinearLayout>
@@ -263,6 +264,7 @@
                 android:layout_height="28dp"
                 android:src="@drawable/ic_lock"
                 android:contentDescription="Locked"
+                app:tint="?attr/colorOnSurface"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
