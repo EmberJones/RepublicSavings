@@ -30,7 +30,7 @@ class CurrencySelection : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        currencyGroup = view.findViewById(R.id.currencyOptionList)
+        currencyGroup = view.findViewById(R.id.currencyOptionGroup)
         continueButton = view.findViewById(R.id.continueButton)
 
         continueButton.setOnClickListener {
@@ -47,7 +47,7 @@ class CurrencySelection : Fragment() {
 
             viewModel.currency = selectedCurrency
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.main, CurrencySelection())
+                .replace(R.id.main, SecuritySettings())
                 .addToBackStack(null)
                 .commit()
         }

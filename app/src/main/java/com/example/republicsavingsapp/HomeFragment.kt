@@ -1,4 +1,4 @@
-package com.example.republicsavingsapp.ui.home
+package com.example.republicsavingsapp
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,9 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.example.republicsavingsapp.CategoryTotal
-import com.example.republicsavingsapp.CurrentUser
-import com.example.republicsavingsapp.RepublicSavingsApp
 import com.example.republicsavingsapp.databinding.FragmentHomeBinding
 import com.example.republicsavingsapp.ui.categories.Category
 import com.github.mikephil.charting.components.XAxis
@@ -18,6 +15,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Locale
+import kotlin.collections.map
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null

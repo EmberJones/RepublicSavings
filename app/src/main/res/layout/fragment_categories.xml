@@ -88,7 +88,7 @@
         <!-- Category name input -->
         <EditText
             android:id="@+id/categoryNameInput"
-            android:layout_width="0dp"
+            android:layout_width="380dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="e.g. Pet care"
@@ -186,8 +186,8 @@
             android:id="@+id/monthlyMaxInput"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="80dp"
             android:hint="e.g. R1,500"
             android:inputType="numberDecimal"
             android:padding="14dp"
@@ -195,7 +195,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
-
+        <Button
+            android:id="@+id/createCategoryButton"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="Add Category"
+            app:layout_constraintTop_toBottomOf="@id/monthlyMaxInput"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>
