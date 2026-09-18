@@ -2,8 +2,9 @@ package com.example.republicsavingsapp
 
 class ExpenseRepository(private val expensesDAO: ExpensesDAO) {
     suspend fun addExpense(
-        name: String, amount: String, category: String,     // necessary parameters
-        description: String? = null, photoFilePath: String? = null, date: Long = System.currentTimeMillis()     // not entirely necessary
+        name: String, amount: String, category: String,
+        includeInBudget: Boolean = true,
+        description: String? = null, photoFilePath: String? = null, date: Long = System.currentTimeMillis()
     ): Long {
         val newExpense = Expenses(
             userId = CurrentUser.userID,
@@ -11,10 +12,10 @@ class ExpenseRepository(private val expensesDAO: ExpensesDAO) {
             expenseDescription = description,
             expenseAmount = amount,
             expenseCategory = category,
+            includeInBudget = includeInBudget,
             expensePhotoFilePath = photoFilePath,
             expenseDate = date
         )
-
         return expensesDAO.AddExpense(newExpense)
     }
 

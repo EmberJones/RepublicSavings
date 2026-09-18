@@ -7,7 +7,7 @@ import com.example.republicsavingsapp.ui.categories.Category
 
 @Database(
     entities = [User::class, Expenses::class, Category::class],
-    version = 3, //was 2, added category table
+    version = 4, // was 3, added includeInBudget to Expenses
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -26,6 +26,7 @@ abstract class AppDatabase : RoomDatabase() {
                     "user_database"
                 )
                     .setDriver(AndroidSQLiteDriver())
+                    .fallbackToDestructiveMigration()
                     .build()
                     .also { Instance = it }
 

@@ -12,6 +12,7 @@ data class Expenses(
     val expenseDescription: String? = null,         // descriptions are allowed to be null
     val expenseAmount: String,
     val expenseCategory: String,
+    val includeInBudget: Boolean = true,
     val expensePhotoFilePath: String? = null,                // images are allowed to be null, and the images are stored locally on the phone, not in the DB
     val expenseDate: Long,
 
