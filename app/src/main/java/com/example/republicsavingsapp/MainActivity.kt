@@ -1,6 +1,7 @@
 package com.example.republicsavingsapp
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -11,20 +12,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        CurrentUser.setUser(User(
-            userID = 1, userName = "Jonny",
-            userSurname = "Test",
-            email = "JonnyTest@hotmail.com",
-            userPassword = "guest123",
-            currency = "ZAR",
-            biometricEnabled = false
-        ))
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+
         }
 
         val navHostFragment = supportFragmentManager
@@ -46,6 +41,30 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+
+        if(savedInstanceState == null){
+            if(CurrentUser.isLoggedIn){
+                showMainApp()
+            }
+            else{
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.auth_container, Login())
+                    .commit()
+                showAuthFlow()
+            }
+        }
+    }
+
+    fun showMainApp(){
+        findViewById<View>(R.id.auth_container).visibility = View.GONE
+        findViewById<View>(R.id.navHostFragment).visibility = View.VISIBLE
+        findViewById<View>(R.id.bottomNav).visibility = View.VISIBLE
+    }
+
+    fun showAuthFlow() {
+        findViewById<View>(R.id.auth_container).visibility = View.VISIBLE
+        findViewById<View>(R.id.navHostFragment).visibility = View.GONE
+        findViewById<View>(R.id.bottomNav).visibility = View.GONE
     }
 }
 

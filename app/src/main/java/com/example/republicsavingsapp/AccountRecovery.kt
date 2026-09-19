@@ -11,7 +11,6 @@ import android.widget.EditText
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -21,7 +20,8 @@ class AccountRecovery : Fragment(){
 
     private lateinit var recoveryEmailField: EditText
     private lateinit var sendResetLinkButton: Button
-    private lateinit var verifywithBiometricButton: Button
+    private lateinit var verifyWithBiometricButton: Button
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +36,7 @@ class AccountRecovery : Fragment(){
 
         recoveryEmailField = view.findViewById(R.id.email)
         sendResetLinkButton = view.findViewById(R.id.sendResetLinkButton)
-        verifywithBiometricButton = view.findViewById(R.id.biometricVerifyButton)
+        verifyWithBiometricButton = view.findViewById(R.id.biometricVerifyButton)
 
         val database = AppDatabase.getDatabase(requireContext())
         val userDAO = database.userDAO()
@@ -60,8 +60,8 @@ class AccountRecovery : Fragment(){
                 }
 
                 //No backend email service. This simulates the link being sent
-                Toast.makeText(requireContext(), "Reset instructions have been sent to your email" +
-                        "SIMULATED", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Reset instructions have been sent to your email (SIMULATED)",
+                    Toast.LENGTH_SHORT).show()
 
                 goToResetPassword(email)
 
@@ -69,7 +69,7 @@ class AccountRecovery : Fragment(){
             }
         }
 
-        verifywithBiometricButton.setOnClickListener {
+        verifyWithBiometricButton.setOnClickListener {
             val email = recoveryEmailField.text.toString().trim()
 
             if(email.isEmpty()){
@@ -151,6 +151,7 @@ class AccountRecovery : Fragment(){
         biometricPrompt.authenticate(promptInfo)
     }
 
+
     private fun goToResetPassword(email: String){
         val resetFragment = ResetPassword().apply {
             arguments = Bundle().apply {
@@ -159,7 +160,7 @@ class AccountRecovery : Fragment(){
         }
 
         requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.main, resetFragment)
+            .replace(R.id.auth_container, Login())
             .addToBackStack(null)
             .commit()
 

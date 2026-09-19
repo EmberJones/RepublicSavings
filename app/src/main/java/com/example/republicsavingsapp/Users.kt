@@ -11,7 +11,7 @@ import androidx.room3.PrimaryKey
 )
 data class User(
     @PrimaryKey(autoGenerate = true)
-    val userID: Int,
+    val userID: Long = 0,
     val userName: String,
     val userSurname: String,
     val email: String,

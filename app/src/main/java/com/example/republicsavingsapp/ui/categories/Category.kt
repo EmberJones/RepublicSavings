@@ -8,7 +8,7 @@ data class Category(
     @PrimaryKey(autoGenerate = true)
     val categoryID: Int = 0,
 
-    val userId: Int,
+    val userId: Long,
     val categoryName: String,
     val categoryIcon: String,
     val monthlyMax: Double

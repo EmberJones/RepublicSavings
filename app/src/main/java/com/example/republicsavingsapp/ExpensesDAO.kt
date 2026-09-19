@@ -13,13 +13,13 @@ interface ExpensesDAO {
     suspend fun AddUser(users: User): Long
 
     @Query("SELECT * FROM users WHERE userID = :userID LIMIT 1")
-    suspend fun getUserById(userID: Int): User?
+    suspend fun getUserById(userID: Long): User?
 
     @Query("UPDATE users SET currency = :currency WHERE userID = :userID")
-    suspend fun updateCurrency(userID: Int, currency: String)
+    suspend fun updateCurrency(userID: Long, currency: String)
 
     @Query("SELECT * FROM expenses WHERE userID = :activeUserID AND expenseCategory = :category ORDER BY uploaded DESC")
-    suspend fun getAllFromUserInCategory(activeUserID: Int, category: String): List<Expenses>
+    suspend fun getAllFromUserInCategory(activeUserID: Long, category: String): List<Expenses>
 
     // get expenses since date
     @Query("SELECT * FROM expenses WHERE expenseDate > :date ORDER BY expenseDate ASC")
@@ -39,9 +39,9 @@ interface ExpensesDAO {
     WHERE userID = :activeUserID AND expenseDate BETWEEN :startDate AND :endDate
     GROUP BY expenseCategory
 """)
-    suspend fun getTotalsByCategory(activeUserID: Int, startDate: Long, endDate: Long): List<CategoryTotal>
+    suspend fun getTotalsByCategory(activeUserID: Long, startDate: Long, endDate: Long): List<CategoryTotal>
     @Query("SELECT * FROM expenses WHERE userID = :activeUserID ORDER BY uploaded DESC")
-    suspend fun getAllFromUser(activeUserID: Int): List<Expenses>
+    suspend fun getAllFromUser(activeUserID: Long): List<Expenses>
 
     @Query("SELECT * FROM users ORDER BY userID ASC")
     suspend fun getAllUsers(): List<User>

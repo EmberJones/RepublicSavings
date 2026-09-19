@@ -47,7 +47,7 @@ class CurrencySelection : Fragment() {
 
             viewModel.currency = selectedCurrency
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.main, SecuritySettings())
+                .replace(R.id.auth_container, SecuritySettings())
                 .addToBackStack(null)
                 .commit()
         }

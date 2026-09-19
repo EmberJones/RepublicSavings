@@ -10,5 +10,5 @@ interface CategoryDAO {
     suspend fun addCategory(category: Category): Long
 
     @Query("SELECT * FROM categories WHERE userId = :activeUserID ORDER BY categoryName ASC")
-    suspend fun getAllForUser(activeUserID: Int): List<Category>
+    suspend fun getAllForUser(activeUserID: Long): List<Category>
 }

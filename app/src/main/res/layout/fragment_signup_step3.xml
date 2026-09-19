@@ -9,7 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="24dp"
-        tools:context=".ui.signup.SignUpStep3Fragment">
+        tools:context=".ui.signup.SignUpStep3Fragment"
+        tools:layout_editor_absoluteX="-28dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <!-- Back arrow -->
         <ImageButton
@@ -19,10 +21,10 @@
             android:layout_marginTop="16dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Back"
-            app:tint="?attr/colorOnSurface"
             android:src="@drawable/ic_arrow_back"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="?attr/colorOnSurface" />
 
         <!-- Step progress bar -->
         <ProgressBar
@@ -89,9 +91,9 @@
                 android:layout_height="24dp"
                 android:contentDescription="Biometric icon"
                 android:src="@drawable/ic_fingerprint"
-                app:tint="?attr/colorOnSurface"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="?attr/colorOnSurface" />
 
             <TextView
                 android:id="@+id/biometricTitle"
@@ -144,10 +146,10 @@
                 android:layout_height="16dp"
                 android:contentDescription="Info"
                 android:src="@drawable/ic_info"
-                app:tint="?attr/colorOnSurface"
                 app:layout_constraintBottom_toBottomOf="@id/infoText"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="?attr/colorOnSurface" />
 
             <TextView
                 android:id="@+id/infoText"
@@ -189,12 +191,13 @@
             android:id="@+id/termsText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="64dp"
             android:gravity="center"
             android:text="By continuing you agree to our Terms and Privacy Policy"
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -24,6 +26,8 @@ class Login : Fragment() {
     private lateinit var usernameField: EditText
     private lateinit var passwordField: EditText
     private lateinit var loginButton: Button
+    private lateinit var signupButton: TextView
+    private lateinit var forgotPasswordButton: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +43,8 @@ class Login : Fragment() {
         usernameField = view.findViewById(R.id.username)
         passwordField = view.findViewById(R.id.password)
         loginButton = view.findViewById(R.id.login)
-
+        signupButton = view.findViewById(R.id.signUpPrompt)
+        forgotPasswordButton = view.findViewById(R.id.forgotPassword)
 
         //Initialize RoomDB
         val database = AppDatabase.getDatabase(requireContext())
@@ -49,7 +54,6 @@ class Login : Fragment() {
             val username = usernameField.text.toString().trim()
             val password = passwordField.text.toString().trim()
 
-
         //Basic validation check
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(requireContext(), "Fields cannot be empty",
@@ -58,7 +62,6 @@ class Login : Fragment() {
             return@setOnClickListener
         }
 
-
         //Save to database on a background thread using Coroutines
         lifecycleScope.launch {
             val user = withContext(Dispatchers.IO){
@@ -66,9 +69,10 @@ class Login : Fragment() {
             }
 
             if(user != null){
-                val userID = user.userID //User entity names its ID field
+                CurrentUser.setUser(user)
                 Toast.makeText(requireContext(), "Login Successful",
                     Toast.LENGTH_SHORT).show()
+                (requireActivity() as MainActivity).showMainApp()
                 // e.g. save userId to a shared ViewModel, SharedPreferences, or navigate on:
                 // findNavController().navigate(R.id.action_login_to_home, bundleOf("userId" to userId))
                 } else {
@@ -80,16 +84,19 @@ class Login : Fragment() {
                 passwordField.text.clear()
 
                  }
-
-
-
-
             }
-
         }
-
+        signupButton.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.auth_container, Register())
+                .commit()
+        }
+        forgotPasswordButton.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.auth_container, ResetPassword())
+                .commit()
+        }
     }
-
     companion object{
         @JvmStatic
         fun newInstance() = Login()

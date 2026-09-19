@@ -20,6 +20,6 @@ interface UserDAO {
     suspend fun getUserIdByUsername(username: String): Int?
 
     @Query("Update users set userPassword = :newPassword Where email = :email")
-    suspend fun updatePassword(email: String, newPassword: String)
+    suspend fun updatePassword(email: String?, newPassword: String)
 
 }

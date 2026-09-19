@@ -47,17 +47,19 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Email label -->
+
+    <!-- Email input -->
+
     <TextView
         android:id="@+id/emailLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="36dp"
         android:text="@string/prompt_email"
         android:textSize="13sp"
-        app:layout_constraintTop_toBottomOf="@id/welcomeSubtitle"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/welcomeSubtitle" />
 
-    <!-- Email input -->
     <EditText
         android:id="@+id/username"
         android:layout_width="0dp"
@@ -110,18 +112,20 @@
         app:layout_constraintTop_toBottomOf="@id/password" />
 
     <!-- Login button -->
+
+    <!-- Loading indicator -->
     <Button
         android:id="@+id/login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
+        android:enabled="true"
         android:text="Login"
-        android:enabled="false"
-        app:layout_constraintTop_toBottomOf="@id/forgotPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/forgotPassword" />
 
-    <!-- Loading indicator -->
     <ProgressBar
         android:id="@+id/loading"
         android:layout_width="wrap_content"
@@ -132,6 +136,11 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- "or" divider -->
+
+    <!-- Biometrics button -->
+
+    <!-- Sign up prompt -->
+
     <TextView
         android:id="@+id/orDivider"
         android:layout_width="wrap_content"
@@ -139,19 +148,15 @@
         android:layout_marginTop="16dp"
         android:text="or"
         android:textSize="12sp"
-        app:layout_constraintTop_toBottomOf="@id/login"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Biometrics button -->
-
-    <!-- Sign up prompt -->
+        app:layout_constraintTop_toBottomOf="@id/login" />
 
     <Button
         android:id="@+id/biometricLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="8dp"
         android:text="Log in with biometrics"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -162,13 +167,14 @@
         android:id="@+id/signUpPrompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:text="Don't have an account? Sign up"
-        android:textSize="13sp"
+        android:layout_marginBottom="12dp"
         android:clickable="true"
         android:focusable="true"
+        android:text="Don't have an account? Sign up"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

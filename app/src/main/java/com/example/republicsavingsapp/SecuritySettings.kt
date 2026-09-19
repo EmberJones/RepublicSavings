@@ -54,10 +54,9 @@ class SecuritySettings : Fragment(){
         val userDAO = database.userDAO()
 
         val newUser = User(
-            userName = viewModel.firstName,
+            userName = viewModel.username,
             userSurname = viewModel.surname,
             email = viewModel.email,
-            userID = viewModel.username.toInt(),
             userPassword = viewModel.password,
             currency = viewModel.currency,
             biometricEnabled = viewModel.biometricEnabled
@@ -70,12 +69,18 @@ class SecuritySettings : Fragment(){
                 }
                 Toast.makeText(requireContext(), "Account Created Successfully", Toast.LENGTH_SHORT)
                     .show()
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.main, Login())
+
+                val fragmentManager = requireActivity().supportFragmentManager
+
+                //clear entries pushed during registration flow
+                while (fragmentManager.backStackEntryCount > 0){
+                    fragmentManager.popBackStackImmediate()
+                }
+
+                fragmentManager.beginTransaction()
+                    .replace(R.id.auth_container, Login())
                     .commit()
-                requireActivity().supportFragmentManager.popBackStack(
-                    null, androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
-                )
+
             } catch (e: android.database.sqlite.SQLiteConstraintException){
                 Toast.makeText(requireContext(), "The username is already being used", Toast.LENGTH_SHORT).show()
             }

@@ -1,19 +1,19 @@
 package com.example.republicsavingsapp
 
 object CurrentUser {
-    var userID: Int = -1
+    var currency: String = ""
+        private set
+    var userID: Long = -1
         private set
 
     var userName: String = ""
         private set
 
-    var currency: String = "ZAR"
-        private set
+    val isLoggedIn: Boolean         // checking if logged in or out
+        get() = userID != -1L
 
-    val isLoggedIn: Boolean
-        get() = userID != -1
-
-    fun setUser(user: User) {
+    fun setUser(user: User)        // use to log in
+    {
         userID = user.userID
         userName = user.userName
         currency = user.currency
@@ -23,9 +23,10 @@ object CurrentUser {
         currency = newCurrency
     }
 
-    fun clear() {
+    fun clear()             // use to log out
+    {
         userID = -1
         userName = ""
-        currency = "ZAR"
+        currency = ""
     }
 }
