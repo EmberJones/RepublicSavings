@@ -191,7 +191,29 @@
                 app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/dateLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Date"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/includeInBudgetCard"
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <TextView
+            android:id="@+id/dateInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:padding="14dp"
+            android:drawableEnd="@drawable/ic_chevron_down"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintTop_toBottomOf="@id/dateLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="20 September 2026" />
         <!-- Description label -->
         <TextView
             android:id="@+id/descriptionLabel"
@@ -200,7 +222,7 @@
             android:layout_marginTop="20dp"
             android:text="Description (optional)"
             android:textSize="13sp"
-            app:layout_constraintTop_toBottomOf="@id/includeInBudgetCard"
+            app:layout_constraintTop_toBottomOf="@id/dateInput"
             app:layout_constraintStart_toStartOf="parent" />
 
         <!-- Description input -->

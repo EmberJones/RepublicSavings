@@ -1,5 +1,6 @@
 package com.example.republicsavingsapp.ui.transaction
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,24 +15,31 @@ import com.example.republicsavingsapp.RepublicSavingsApp
 import com.example.republicsavingsapp.databinding.FragmentsAddTransactionBinding
 import com.example.republicsavingsapp.ui.categories.Category
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class AddTransactionFragment : Fragment() {
     private var _binding: FragmentsAddTransactionBinding? = null
     private val binding get() = _binding!!
     private var categories: List<Category> = emptyList()
+    private var selectedDate: Long = System.currentTimeMillis()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentsAddTransactionBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadCategoriesIntoSpinner()
+        setupDatePicker()
 
         binding.closeButton.setOnClickListener { findNavController().popBackStack() }
         binding.saveTransactionButton.setOnClickListener { saveTransaction() }
         binding.saveTextButton.setOnClickListener { saveTransaction() }
     }
+
     private fun loadCategoriesIntoSpinner() {
         val repo = (requireActivity().application as RepublicSavingsApp).categoryRepository
         lifecycleScope.launch {
@@ -42,6 +50,28 @@ class AddTransactionFragment : Fragment() {
             )
         }
     }
+
+    private fun setupDatePicker() {
+        updateDateText()
+        binding.dateInput.setOnClickListener {
+            val cal = Calendar.getInstance().apply { timeInMillis = selectedDate }
+            DatePickerDialog(
+                requireContext(),
+                { _, year, month, day ->
+                    cal.set(year, month, day)
+                    selectedDate = cal.timeInMillis
+                    updateDateText()
+                },
+                cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+    }
+
+    private fun updateDateText() {
+        val format = SimpleDateFormat("d MMMM yyyy", Locale.getDefault())
+        binding.dateInput.text = format.format(selectedDate)
+    }
+
     private fun saveTransaction() {
         val name = binding.transactionNameInput.text.toString().trim()
         val amountText = binding.amountInput.text.toString().trim()
@@ -71,10 +101,12 @@ class AddTransactionFragment : Fragment() {
                 amount = amountText,
                 category = selectedCategory,
                 includeInBudget = includeInBudget,
-                description = description
+                description = description,
+                date = selectedDate
             )
             findNavController().popBackStack()
         }
     }
+
     override fun onDestroyView() { super.onDestroyView(); _binding = null }
 }
