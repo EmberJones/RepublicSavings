@@ -42,16 +42,15 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        if(savedInstanceState == null){
-            if(CurrentUser.isLoggedIn){
-                showMainApp()
-            }
-            else{
+        if (CurrentUser.isLoggedIn) {
+            showMainApp()
+        } else {
+            if (savedInstanceState == null) {
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.auth_container, Login())
                     .commit()
-                showAuthFlow()
             }
+            showAuthFlow()
         }
     }
 
