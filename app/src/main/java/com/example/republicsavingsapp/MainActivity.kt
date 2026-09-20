@@ -60,9 +60,12 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.auth_container).visibility = View.GONE
         findViewById<View>(R.id.navHostFragment).visibility = View.VISIBLE
         findViewById<View>(R.id.bottomNav).visibility = View.VISIBLE
-        navController.navigate(R.id.homeFragment)
     }
 
+    fun onLoginSuccess() {
+        showMainApp()
+        navController.navigate(R.id.homeFragment)
+    }
     fun showAuthFlow() {
         findViewById<View>(R.id.auth_container).visibility = View.VISIBLE
         findViewById<View>(R.id.navHostFragment).visibility = View.GONE

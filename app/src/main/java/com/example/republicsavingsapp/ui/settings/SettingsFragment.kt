@@ -68,7 +68,7 @@ class SettingsFragment : Fragment() {
         val app = requireActivity().application as RepublicSavingsApp
         viewLifecycleOwner.lifecycleScope.launch {
             val user = app.userRepository.getUserById(CurrentUser.userID)
-            binding.currencyValue.text = user?.currency ?: "ZAR"
+            _binding?.currencyValue?.text = user?.currency ?: "ZAR"
         }
 
         binding.currencyRow.setOnClickListener {
@@ -111,10 +111,12 @@ class SettingsFragment : Fragment() {
                 val correct = app.userRepository.isCorrectUsernameAndPassword(CurrentUser.userName, entered)
                 if (correct) {
                     val user = app.userRepository.getUserById(CurrentUser.userID)
-                    binding.accountLockedTitle.text = "Account unlocked"
-                    binding.accountLockedSubtitle.text = user?.email ?: ""
-                    binding.unlockPassword.visibility = View.GONE
-                    binding.unlockButton.visibility = View.GONE
+                    _binding?.let { b ->
+                        b.accountLockedTitle.text = "Account unlocked"
+                        b.accountLockedSubtitle.text = user?.email ?: ""
+                        b.unlockPassword.visibility = View.GONE
+                        b.unlockButton.visibility = View.GONE
+                    }
                 } else {
                     Toast.makeText(requireContext(), "Incorrect password", Toast.LENGTH_SHORT).show()
                 }
