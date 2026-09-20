@@ -20,6 +20,8 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.google.android.material.R
+import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
@@ -41,6 +43,15 @@ class ExpenseFragment : Fragment() {
     )
     private var selectedPeriodIndex = 2 // defaults to "Past month"
 
+    private val transactionAdapter = TransactionAdapter(
+        items = emptyList(),
+        onReceiptClick = { uri -> showReceiptDialog(uri) }
+    )
+
+    private fun showReceiptDialog(path: String) {
+        ReceiptDialogFragment.newInstance(path)
+            .show(childFragmentManager, "receipt")
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentExpenseBinding.inflate(inflater, container, false)
         return binding.root
@@ -49,7 +60,10 @@ class ExpenseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = TransactionAdapter(emptyList())
+        adapter = TransactionAdapter(
+            emptyList(),
+            onReceiptClick =  { path -> showReceiptDialog(path) }
+        )
         binding.transactionsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.transactionsRecyclerView.adapter = adapter
 
@@ -119,8 +133,8 @@ class ExpenseFragment : Fragment() {
             return
         }
 
-        val textColor = com.google.android.material.color.MaterialColors.getColor(
-            binding.categoryPieChart, com.google.android.material.R.attr.colorOnSurface
+        val textColor = MaterialColors.getColor(
+            binding.categoryPieChart, R.attr.colorOnSurface
         )
 
         val entries = totals.map { PieEntry(it.total.toFloat(), it.category) }

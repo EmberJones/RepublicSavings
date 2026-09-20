@@ -55,7 +55,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
-
+    implementation("io.coil-kt:coil:2.7.0")
     implementation(libs.androidx.room3.compiler)
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)

@@ -7,7 +7,7 @@ import com.example.republicsavingsapp.ui.categories.Category
 
 @Database(
     entities = [User::class, Expenses::class, Category::class],
-    version = 4, // was 3, added includeInBudget to Expenses
+    version = 5,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

@@ -91,9 +91,9 @@
                 android:id="@+id/budgetUsedLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="spent"
-                android:textSize="11sp"
+                android:layout_marginTop="0dp"
+                android:text="Spent"
+                android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@id/budgetPercentText"
                 app:layout_constraintStart_toStartOf="@id/budgetProgress"
                 app:layout_constraintEnd_toEndOf="@id/budgetProgress" />

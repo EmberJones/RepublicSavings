@@ -13,7 +13,7 @@ data class Expenses(
     val expenseAmount: String,
     val expenseCategory: String,
     val includeInBudget: Boolean = true,
-    val expensePhotoFilePath: String? = null,                // images are allowed to be null, and the images are stored locally on the phone, not in the DB
+    val photoFilePath: String?,             // images are allowed to be null, and the images are stored locally on the phone, not in the DB
     val expenseDate: Long,
 
     val uploaded: Long = System.currentTimeMillis()     // when the upload expense button is clicked, don't populate

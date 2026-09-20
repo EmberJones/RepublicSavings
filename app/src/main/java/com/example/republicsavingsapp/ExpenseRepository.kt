@@ -13,8 +13,8 @@ class ExpenseRepository(private val expensesDAO: ExpensesDAO) {
             expenseAmount = amount,
             expenseCategory = category,
             includeInBudget = includeInBudget,
-            expensePhotoFilePath = photoFilePath,
-            expenseDate = date
+            expenseDate = date,
+            photoFilePath = photoFilePath
         )
         return expensesDAO.AddExpense(newExpense)
     }
