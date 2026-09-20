@@ -1,4 +1,4 @@
-package com.example.republicsavingsapp
+package com.example.republicsavingsapp.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,15 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.example.republicsavingsapp.CategoryTotal
+import com.example.republicsavingsapp.CurrencyFormatter
+import com.example.republicsavingsapp.CurrentUser
+import com.example.republicsavingsapp.RepublicSavingsApp
 import com.example.republicsavingsapp.databinding.FragmentHomeBinding
 import com.example.republicsavingsapp.ui.categories.Category
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.google.android.material.R
+import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.launch
 import java.util.Calendar
-import kotlin.collections.map
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -58,10 +66,15 @@ class HomeFragment : Fragment() {
         }
         val labels = categories.map { it.categoryName }
 
+        val textColor = MaterialColors.getColor(
+            binding.categoryBarChart, R.attr.colorOnSurface
+        )
+
         val dataSet = BarDataSet(entries, "Spent").apply {
             colors = ColorTemplate.MATERIAL_COLORS.toList()
             valueTextSize = 10f
-            valueFormatter = object : com.github.mikephil.charting.formatter.ValueFormatter() {
+            valueTextColor = textColor
+            valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
                     return CurrencyFormatter.formatWhole(value.toDouble())
                 }
@@ -74,12 +87,17 @@ class HomeFragment : Fragment() {
             legend.isEnabled = false
             axisRight.isEnabled = false
             axisLeft.axisMinimum = 0f
+            axisLeft.textColor = textColor
+            extraBottomOffset = 40f
             xAxis.apply {
                 position = XAxis.XAxisPosition.BOTTOM
                 granularity = 1f
                 setDrawGridLines(false)
                 valueFormatter = IndexAxisValueFormatter(labels)
                 labelRotationAngle = -45f
+                textSize = 9f
+                setAvoidFirstLastClipping(true)
+                this.textColor = textColor
             }
             setFitBars(true)
             animateY(600)

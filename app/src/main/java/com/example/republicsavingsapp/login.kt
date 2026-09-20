@@ -72,8 +72,7 @@ class Login : Fragment() {
                 CurrentUser.setUser(user)
                 Toast.makeText(requireContext(), "Login Successful",
                     Toast.LENGTH_SHORT).show()
-                (requireActivity() as MainActivity).showMainApp()
-                // e.g. save userId to a shared ViewModel, SharedPreferences, or navigate on:
+                (requireActivity() as MainActivity).onLoginSuccess()                // e.g. save userId to a shared ViewModel, SharedPreferences, or navigate on:
                 // findNavController().navigate(R.id.action_login_to_home, bundleOf("userId" to userId))
                 } else {
                 Toast.makeText((requireContext()), "Invalid username or password",
