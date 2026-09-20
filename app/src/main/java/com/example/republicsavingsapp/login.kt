@@ -51,7 +51,7 @@ class Login : Fragment() {
         val userDAO = database.userDAO()
 
         loginButton.setOnClickListener {
-            val username = usernameField.text.toString().trim()
+            val username = usernameField.text.toString().trim().lowercase()
             val password = passwordField.text.toString().trim()
 
         //Basic validation check
@@ -93,7 +93,7 @@ class Login : Fragment() {
         }
         forgotPasswordButton.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.auth_container, ResetPassword())
+                .replace(R.id.auth_container, AccountRecovery())
                 .commit()
         }
     }

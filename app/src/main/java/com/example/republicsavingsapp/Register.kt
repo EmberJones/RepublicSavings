@@ -55,7 +55,7 @@ class Register : Fragment() {
         registerButton.setOnClickListener {
             val firstName = firstNameField.text.toString().trim()
             val lastName = surnameField.text.toString().trim()
-            val email = emailField.text.toString().trim()
+            val email = emailField.text.toString().trim().lowercase()
             val password = passwordField.text.toString().trim()
             val fragmentManager = requireActivity().supportFragmentManager
 

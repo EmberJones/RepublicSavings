@@ -42,7 +42,7 @@ class AccountRecovery : Fragment(){
         val userDAO = database.userDAO()
 
         sendResetLinkButton.setOnClickListener {
-            val email = recoveryEmailField.text.toString().trim()
+            val email = recoveryEmailField.text.toString().trim().lowercase()
 
             if(email.isEmpty()){
                 Toast.makeText(requireContext(), "Please enter your email", Toast.LENGTH_SHORT).show()
