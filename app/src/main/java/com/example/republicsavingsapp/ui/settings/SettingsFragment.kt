@@ -66,7 +66,7 @@ class SettingsFragment : Fragment() {
 
     private fun setupCurrency() {
         val app = requireActivity().application as RepublicSavingsApp
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             val user = app.userRepository.getUserById(CurrentUser.userID)
             binding.currencyValue.text = user?.currency ?: "ZAR"
         }
@@ -79,7 +79,7 @@ class SettingsFragment : Fragment() {
                     val selected = currencyOptions[which]
                     binding.currencyValue.text = selected
                     CurrentUser.updateCurrency(selected)
-                    lifecycleScope.launch {
+                    viewLifecycleOwner.lifecycleScope.launch {
                         app.userRepository.updateCurrency(CurrentUser.userID, selected)
                     }
                     dialog.dismiss()
@@ -107,7 +107,7 @@ class SettingsFragment : Fragment() {
             }
 
             val app = requireActivity().application as RepublicSavingsApp
-            lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 val correct = app.userRepository.isCorrectUsernameAndPassword(CurrentUser.userName, entered)
                 if (correct) {
                     val user = app.userRepository.getUserById(CurrentUser.userID)
