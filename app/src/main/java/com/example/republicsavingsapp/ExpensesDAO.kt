@@ -1,48 +1,36 @@
 package com.example.republicsavingsapp
 
-import androidx.room3.Dao
-import androidx.room3.Insert
-import androidx.room3.Query
-
-@Dao
 interface ExpensesDAO {
-    @Insert
-    suspend fun AddExpense(expenses: Expenses): Long
+    suspend fun AddExpense(expenses: Expenses): Long    // insert
 
-    @Insert
-    suspend fun AddUser(users: User): Long
+    suspend fun AddUser(users: User): Long  // insert
 
-    @Query("SELECT * FROM users WHERE userID = :userID LIMIT 1")
+    //@Query("SELECT * FROM users WHERE userID = :userID LIMIT 1")
     suspend fun getUserById(userID: Long): User?
 
-    @Query("UPDATE users SET currency = :currency WHERE userID = :userID")
+    //@Query("UPDATE users SET currency = :currency WHERE userID = :userID")
     suspend fun updateCurrency(userID: Long, currency: String)
 
-    @Query("SELECT * FROM expenses WHERE userID = :activeUserID AND expenseCategory = :category ORDER BY uploaded DESC")
+    //@Query("SELECT * FROM expenses WHERE userID = :activeUserID AND expenseCategory = :category ORDER BY uploaded DESC")
     suspend fun getAllFromUserInCategory(activeUserID: Long, category: String): List<Expenses>
 
     // get expenses since date
-    @Query("SELECT * FROM expenses WHERE expenseDate > :date ORDER BY expenseDate ASC")
+    //@Query("SELECT * FROM expenses WHERE expenseDate > :date ORDER BY expenseDate ASC")
     suspend fun getAllExpensesSince(date: Long): List<Expenses>
 
     // get expenses up-to-date
-    @Query("SELECT * FROM expenses WHERE expenseDate < :date ORDER BY expenseDate DESC")
+    //@Query("SELECT * FROM expenses WHERE expenseDate < :date ORDER BY expenseDate DESC")
     suspend fun getAllExpensesUpTo(date: Long): List<Expenses>
 
     // get expenses between 2 dates
-    @Query("SELECT * FROM expenses WHERE expenseDate > :firstDate AND expenseDate < :lastDate ORDER BY expenseDate ASC")
+    //@Query("SELECT * FROM expenses WHERE expenseDate > :firstDate AND expenseDate < :lastDate ORDER BY expenseDate ASC")
     suspend fun getAllExpensesBetween(firstDate: Long, lastDate: Long): List<Expenses>
 
-    @Query("""
-    SELECT expenseCategory AS category, SUM(CAST(expenseAmount AS REAL)) AS total
-    FROM expenses
-    WHERE userID = :activeUserID AND expenseDate BETWEEN :startDate AND :endDate
-    GROUP BY expenseCategory
-""")
+    //@Query("""SELECT expenseCategory AS category, SUM(CAST(expenseAmount AS REAL)) AS total FROM expenses WHERE userID = :activeUserID AND expenseDate BETWEEN :startDate AND :endDate GROUP BY expenseCategory""")
     suspend fun getTotalsByCategory(activeUserID: Long, startDate: Long, endDate: Long): List<CategoryTotal>
-    @Query("SELECT * FROM expenses WHERE userID = :activeUserID ORDER BY uploaded DESC")
+    //@Query("SELECT * FROM expenses WHERE userID = :activeUserID ORDER BY uploaded DESC")
     suspend fun getAllFromUser(activeUserID: Long): List<Expenses>
 
-    @Query("SELECT * FROM users ORDER BY userID ASC")
+    //@Query("SELECT * FROM users ORDER BY userID ASC")
     suspend fun getAllUsers(): List<User>
 }

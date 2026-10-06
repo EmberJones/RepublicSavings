@@ -10,16 +10,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class SecuritySettings : Fragment(){
+class SecuritySettings : Fragment() {
     private lateinit var biometricSwitch: Switch
     private lateinit var createAccountButton: Button
     private lateinit var skipButton: Button
 
-    private  val viewModel: RegistrationViewModel by activityViewModels()
+    private val viewModel: RegistrationViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,23 +34,18 @@ class SecuritySettings : Fragment(){
         createAccountButton = view.findViewById(R.id.createAccountButton)
         skipButton = view.findViewById(R.id.skipButton)
 
-        //Account creates regardless of switch on or off
         createAccountButton.setOnClickListener {
             viewModel.biometricEnabled = biometricSwitch.isChecked
             createAccount()
         }
 
-        //Skip bypasses switch and disables biometric login
         skipButton.setOnClickListener {
             viewModel.biometricEnabled = false
             createAccount()
         }
     }
 
-    private fun createAccount(){
-        val database = AppDatabase.getDatabase(requireContext())
-        val userDAO = database.userDAO()
-
+    private fun createAccount() {
         val newUser = User(
             userName = viewModel.username,
             userSurname = viewModel.surname,
@@ -64,16 +57,14 @@ class SecuritySettings : Fragment(){
 
         lifecycleScope.launch {
             try {
-                withContext(Dispatchers.IO) {
-                    userDAO.insertUser(newUser)
-                }
-                Toast.makeText(requireContext(), "Account Created Successfully", Toast.LENGTH_SHORT)
-                    .show()
+                val app = requireActivity().application as RepublicSavingsApp
+                app.userRepository.addUser(newUser)
+
+                Toast.makeText(requireContext(), "Account Created Successfully", Toast.LENGTH_SHORT).show()
 
                 val fragmentManager = requireActivity().supportFragmentManager
 
-                //clear entries pushed during registration flow
-                while (fragmentManager.backStackEntryCount > 0){
+                while (fragmentManager.backStackEntryCount > 0) {
                     fragmentManager.popBackStackImmediate()
                 }
 
@@ -81,13 +72,13 @@ class SecuritySettings : Fragment(){
                     .replace(R.id.auth_container, Login())
                     .commit()
 
-            } catch (e: android.database.sqlite.SQLiteConstraintException){
-                Toast.makeText(requireContext(), "The username is already being used", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Error creating account: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
-
     }
-    companion object{
+
+    companion object {
         @JvmStatic
         fun newInstance() = SecuritySettings()
     }

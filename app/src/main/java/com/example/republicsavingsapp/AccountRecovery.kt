@@ -1,34 +1,31 @@
 package com.example.republicsavingsapp
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kotlinx.coroutines.Dispatchers
 
-class AccountRecovery : Fragment(){
+class AccountRecovery : Fragment() {
 
     private lateinit var recoveryEmailField: EditText
     private lateinit var sendResetLinkButton: Button
     private lateinit var verifyWithBiometricButton: Button
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_account_recovery, container,false)
+        return inflater.inflate(R.layout.fragment_account_recovery, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,108 +35,89 @@ class AccountRecovery : Fragment(){
         sendResetLinkButton = view.findViewById(R.id.sendResetLinkButton)
         verifyWithBiometricButton = view.findViewById(R.id.biometricVerifyButton)
 
-        val database = AppDatabase.getDatabase(requireContext())
-        val userDAO = database.userDAO()
-
         sendResetLinkButton.setOnClickListener {
             val email = recoveryEmailField.text.toString().trim().lowercase()
 
-            if(email.isEmpty()){
+            if (email.isEmpty()) {
                 Toast.makeText(requireContext(), "Please enter your email", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             lifecycleScope.launch {
-                val user = withContext(Dispatchers.IO){
-                    userDAO.getUserByEmail(email)
-                }
+                val app = requireActivity().application as RepublicSavingsApp
+                val user = app.userRepository.getUserByEmail(email)
 
-                if(user == null){
+                if (user == null) {
                     Toast.makeText(requireContext(), "No Account found with that email", Toast.LENGTH_SHORT).show()
                     return@launch
                 }
 
-                //No backend email service. This simulates the link being sent
-                Toast.makeText(requireContext(), "Reset instructions have been sent to your email (SIMULATED)",
-                    Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Reset instructions have been sent to your email (SIMULATED)",
+                    Toast.LENGTH_SHORT
+                ).show()
 
                 goToResetPassword(email)
-
-
             }
         }
 
         verifyWithBiometricButton.setOnClickListener {
             val email = recoveryEmailField.text.toString().trim()
 
-            if(email.isEmpty()){
+            if (email.isEmpty()) {
                 Toast.makeText(requireContext(), "Please enter your email first", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             lifecycleScope.launch {
-                val user = withContext(Dispatchers.IO){
-                    userDAO.getUserByEmail(email)
-                }
+                val app = requireActivity().application as RepublicSavingsApp
+                val user = app.userRepository.getUserByEmail(email)
 
-                if (user == null){
+                if (user == null) {
                     Toast.makeText(requireContext(), "No account with this email", Toast.LENGTH_SHORT).show()
                     return@launch
                 }
                 startBiometricVerification(email)
             }
-
         }
-
     }
 
-    private fun startBiometricVerification(email: String){
+    private fun startBiometricVerification(email: String) {
         val biometricManager = BiometricManager.from(requireContext())
 
-        when (biometricManager.canAuthenticate(BiometricManager.
-        Authenticators.BIOMETRIC_STRONG)){
+        when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)) {
             BiometricManager.BIOMETRIC_SUCCESS -> {
-                //proceed below
+                // proceed
             }
-
             BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE,
             BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
-                Toast.makeText(requireContext(),
-                    "Biometric authentication is not available on this device",
-                    Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Biometric authentication is not available on this device", Toast.LENGTH_SHORT).show()
                 return
             }
-
             BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-                Toast.makeText(requireContext(), "No biometrics enrolled on this device",
-                    Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "No biometrics enrolled on this device", Toast.LENGTH_SHORT).show()
                 return
             }
             else -> {
-                Toast.makeText(requireContext(), "Biometric Authentication Unavailable",
-                    Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Biometric Authentication Unavailable", Toast.LENGTH_SHORT).show()
                 return
             }
-
         }
 
         val executor = ContextCompat.getMainExecutor(requireContext())
 
-        val biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback(){
+        val biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                 super.onAuthenticationSucceeded(result)
-                Toast.makeText(requireContext(), "Identity Verified!",
-                    Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Identity Verified!", Toast.LENGTH_SHORT).show()
                 goToResetPassword(email)
             }
 
             override fun onAuthenticationFailed() {
                 super.onAuthenticationFailed()
-                Toast.makeText(requireContext(), "Biometric error",
-                    Toast.LENGTH_SHORT).show()
-                return
+                Toast.makeText(requireContext(), "Biometric error", Toast.LENGTH_SHORT).show()
             }
-
         })
 
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
@@ -151,8 +129,7 @@ class AccountRecovery : Fragment(){
         biometricPrompt.authenticate(promptInfo)
     }
 
-
-    private fun goToResetPassword(email: String){
+    private fun goToResetPassword(email: String) {
         val resetFragment = ResetPassword().apply {
             arguments = Bundle().apply {
                 putString("email", email)
@@ -160,16 +137,13 @@ class AccountRecovery : Fragment(){
         }
 
         requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.auth_container, Login())
+            .replace(R.id.auth_container, resetFragment)
             .addToBackStack(null)
             .commit()
-
     }
 
-    companion object{
+    companion object {
         @JvmStatic
         fun newInstance() = AccountRecovery()
     }
-
-
 }
