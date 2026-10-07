@@ -1,10 +1,6 @@
 package com.example.republicsavingsapp
-import androidx.room3.Entity
-import androidx.room3.PrimaryKey
 
-@Entity(tableName = "expenses")
 data class Expenses(
-    @PrimaryKey(autoGenerate = true)
     val expenseID: Int = 0,     // not needing to show the user
 
     val userId: Long,       // the row number of the user in the Users Table (1 user:Many expenses relationship)
