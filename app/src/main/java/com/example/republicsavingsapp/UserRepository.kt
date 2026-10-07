@@ -34,6 +34,10 @@ class UserRepository(
         return userDAO.getUserByEmail(email)
     }
 
+    suspend fun getUserByEmailOrUsername(identifier: String): User? {
+        return userDAO.getUserByEmailOrUsername(identifier)
+    }
+
     suspend fun getUserByCredentials(username: String, pass: String): User? {
         return userDAO.getUserByCredentials(username, pass)
     }

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.republicsavingsapp.CurrencyFormatter
 import com.example.republicsavingsapp.Expenses
+import com.example.republicsavingsapp.ImageUtils
 import com.example.republicsavingsapp.R
 import com.example.republicsavingsapp.databinding.ItemTransactionBinding
 import java.io.File
@@ -55,21 +56,31 @@ class TransactionAdapter(
             bindReceipt(expense.photoFilePath)
         }
 
-        private fun bindReceipt(path: String?) {
-            if (path.isNullOrBlank()) {
+        private fun bindReceipt(photoData: String?) {
+            if (photoData.isNullOrBlank()) {
                 binding.receiptThumbnail.visibility = View.GONE
                 binding.receiptThumbnail.setOnClickListener(null)
                 return
             }
 
             binding.receiptThumbnail.visibility = View.VISIBLE
-            binding.receiptThumbnail.load(File(path)) {
-                crossfade(true)
-                placeholder(R.drawable.ic_receipt_placeholder)
-                error(R.drawable.ic_receipt_placeholder)
+
+            val bitmap = ImageUtils.base64ToBitmap(photoData)
+            if (bitmap != null) {
+                binding.receiptThumbnail.load(bitmap) {
+                    crossfade(true)
+                    placeholder(R.drawable.ic_receipt_placeholder)
+                    error(R.drawable.ic_receipt_placeholder)
+                }
+            } else {
+                binding.receiptThumbnail.load(File(photoData)) {
+                    crossfade(true)
+                    placeholder(R.drawable.ic_receipt_placeholder)
+                    error(R.drawable.ic_receipt_placeholder)
+                }
             }
 
-            binding.receiptThumbnail.setOnClickListener { onReceiptClick(path) }
+            binding.receiptThumbnail.setOnClickListener { onReceiptClick(photoData) }
         }
     }
 }

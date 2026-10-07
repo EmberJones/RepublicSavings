@@ -1,6 +1,7 @@
 package com.example.republicsavingsapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class Login : Fragment() {
     private lateinit var usernameField: EditText
@@ -36,27 +40,40 @@ class Login : Fragment() {
         forgotPasswordButton = view.findViewById(R.id.forgotPassword)
 
         loginButton.setOnClickListener {
-            val username = usernameField.text.toString().trim().lowercase()
+            val identifier = usernameField.text.toString().trim().lowercase()
             val password = passwordField.text.toString().trim()
 
-            if (username.isEmpty() || password.isEmpty()) {
+            if (identifier.isEmpty() || password.isEmpty()) {
                 Toast.makeText(requireContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             lifecycleScope.launch {
                 val app = requireActivity().application as RepublicSavingsApp
-                val user = app.userRepository.getUserByCredentials(username, password)
+                val user = app.userRepository.getUserByEmailOrUsername(identifier)
 
-                if (user != null) {
-                    CurrentUser.setUser(user)
-                    Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
-                    (requireActivity() as MainActivity).onLoginSuccess()
-                } else {
-                    Toast.makeText(requireContext(), "Invalid username or password", Toast.LENGTH_SHORT).show()
-                    usernameField.text.clear()
-                    passwordField.text.clear()
+                if (user == null) {
+                    Toast.makeText(requireContext(), "No account found with this email", Toast.LENGTH_SHORT).show()
+                    return@launch
                 }
+
+                if (user.userPassword != password) {
+                    Toast.makeText(requireContext(), "Incorrect password", Toast.LENGTH_SHORT).show()
+                    passwordField.text.clear()
+                    return@launch
+                }
+
+                if (user.email.isNotEmpty()) {
+                    try {
+                        Firebase.auth.signInWithEmailAndPassword(user.email, password).await()
+                    } catch (e: Exception) {
+                        Log.w("Login", "Firebase Auth sign-in: ${e.message}")
+                    }
+                }
+
+                CurrentUser.setUser(user)
+                Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
+                (requireActivity() as MainActivity).onLoginSuccess()
             }
         }
 

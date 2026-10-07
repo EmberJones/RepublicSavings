@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import coil.load
+import com.example.republicsavingsapp.ImageUtils
 import com.example.republicsavingsapp.databinding.DialogReceiptBinding
 import java.io.File
 
@@ -36,14 +37,21 @@ class ReceiptDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val path = arguments?.getString(ARG_PATH)
-        if (path.isNullOrBlank()) {
+        val pathOrData = arguments?.getString(ARG_PATH)
+        if (pathOrData.isNullOrBlank()) {
             dismiss()
             return
         }
 
-        binding.receiptImage.load(File(path)) {
-            crossfade(true)
+        val bitmap = ImageUtils.base64ToBitmap(pathOrData)
+        if (bitmap != null) {
+            binding.receiptImage.load(bitmap) {
+                crossfade(true)
+            }
+        } else {
+            binding.receiptImage.load(File(pathOrData)) {
+                crossfade(true)
+            }
         }
 
         binding.closeButton.setOnClickListener { dismiss() }

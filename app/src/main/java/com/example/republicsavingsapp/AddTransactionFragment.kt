@@ -1,7 +1,6 @@
 package com.example.republicsavingsapp.ui.transaction
 
 import android.app.DatePickerDialog
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -16,12 +15,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.republicsavingsapp.CurrentUser
+import com.example.republicsavingsapp.ImageUtils
 import com.example.republicsavingsapp.RepublicSavingsApp
 import com.example.republicsavingsapp.databinding.FragmentsAddTransactionBinding
 import com.example.republicsavingsapp.ui.categories.Category
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -97,11 +95,8 @@ class AddTransactionFragment : Fragment() {
                 BitmapFactory.decodeStream(it)
             } ?: return@launch
 
-            val file = File(requireContext().filesDir, "receipt_${System.currentTimeMillis()}.jpg")
-            FileOutputStream(file).use { out ->
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 85, out)
-            }
-            photoFilePath = file.absolutePath
+            // Store image directly in database as Base64 string
+            photoFilePath = ImageUtils.bitmapToBase64(bitmap)
 
             binding.receiptPreviewImage.setImageBitmap(bitmap)
             binding.receiptPreviewImage.visibility = View.VISIBLE

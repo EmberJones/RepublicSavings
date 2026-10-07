@@ -1,6 +1,7 @@
 package com.example.republicsavingsapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class SecuritySettings : Fragment() {
     private lateinit var biometricSwitch: Switch
@@ -59,6 +63,14 @@ class SecuritySettings : Fragment() {
             try {
                 val app = requireActivity().application as RepublicSavingsApp
                 app.userRepository.addUser(newUser)
+
+                if (newUser.email.isNotEmpty() && newUser.userPassword.isNotEmpty()) {
+                    try {
+                        Firebase.auth.createUserWithEmailAndPassword(newUser.email, newUser.userPassword).await()
+                    } catch (e: Exception) {
+                        Log.w("Register", "Firebase Auth user creation error: ${e.message}")
+                    }
+                }
 
                 Toast.makeText(requireContext(), "Account Created Successfully", Toast.LENGTH_SHORT).show()
 

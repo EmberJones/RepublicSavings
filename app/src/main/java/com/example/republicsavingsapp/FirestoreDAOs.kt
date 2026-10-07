@@ -211,6 +211,18 @@ class FirestoreUserDAO(private val firestore: FirebaseFirestore) : UserDAO {
         return docToUser(doc)
     }
 
+    override suspend fun getUserByEmailOrUsername(identifier: String): User? {
+        val userByEmail = getUserByEmail(identifier)
+        if (userByEmail != null) return userByEmail
+
+        val snapshot = firestore.collection("users")
+            .whereEqualTo("userName", identifier)
+            .get()
+            .await()
+        val doc = snapshot.documents.firstOrNull() ?: return null
+        return docToUser(doc)
+    }
+
     override suspend fun getUserIdByUsername(username: String): Int? {
         val snapshot = firestore.collection("users")
             .whereEqualTo("userName", username)
