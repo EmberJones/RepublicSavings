@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.ksp)
+    id("com.google.gms.google-services")
     alias(libs.plugins.google.services)
 }
 
@@ -74,4 +75,3 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation(kotlin("test"))
 }
-

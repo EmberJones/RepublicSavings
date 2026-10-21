@@ -1,9 +1,11 @@
 package com.example.republicsavingsapp
 
-class UserRepository(private val expensesDAO: ExpensesDAO) {
+class UserRepository(
+    private val userDAO: UserDAO,
+    private val expensesDAO: ExpensesDAO
+) {
 
-    suspend fun addUser(name: String, surname: String, pass: String, curr : String, mail: String, biomet: Boolean) : Long
-    {
+    suspend fun addUser(name: String, surname: String, pass: String, curr: String, mail: String, biomet: Boolean): Long {
         val newUser = User(
             userID = 0,
             userName = name,
@@ -13,47 +15,48 @@ class UserRepository(private val expensesDAO: ExpensesDAO) {
             biometricEnabled = biomet,
             userPassword = pass
         )
-
         return expensesDAO.AddUser(newUser)
     }
 
-    suspend fun getUsers() : List<User> {
+    suspend fun addUser(user: User): Long {
+        return expensesDAO.AddUser(user)
+    }
+
+    suspend fun getUsers(): List<User> {
         return expensesDAO.getAllUsers()
     }
+
     suspend fun getUserById(userID: Long): User? {
         return expensesDAO.getUserById(userID)
+    }
+
+    suspend fun getUserByEmail(email: String): User? {
+        return userDAO.getUserByEmail(email)
+    }
+
+    suspend fun getUserByEmailOrUsername(identifier: String): User? {
+        return userDAO.getUserByEmailOrUsername(identifier)
+    }
+
+    suspend fun getUserByCredentials(username: String, pass: String): User? {
+        return userDAO.getUserByCredentials(username, pass)
     }
 
     suspend fun updateCurrency(userID: Long, currency: String) {
         expensesDAO.updateCurrency(userID, currency)
     }
 
-    suspend fun isCorrectUsernameAndPassword(name: String, pass: String) : Boolean {
-        val allUsers = expensesDAO.getAllUsers()
-
-        for (user in allUsers)
-        {
-            if (user.userName == name && user.userPassword == pass)
-            {
-                return true
-            }
-        }
-
-        return false
+    suspend fun updatePassword(email: String, newPassword: String) {
+        userDAO.updatePassword(email, newPassword)
     }
 
-    // Does user exist?
+    suspend fun isCorrectUsernameAndPassword(name: String, pass: String): Boolean {
+        val user = userDAO.getUserByCredentials(name, pass)
+        return user != null
+    }
 
-    // used to determine if the username entered has used this app before? if false, prompt to make account
     suspend fun isPreExistingUsername(name: String): Boolean {
-        val allUsers = expensesDAO.getAllUsers()
-
-        for (user in allUsers)
-        {
-            if (user.userName == name)
-                return true
-        }
-
-        return false
+        val userId = userDAO.getUserIdByUsername(name)
+        return userId != null
     }
 }

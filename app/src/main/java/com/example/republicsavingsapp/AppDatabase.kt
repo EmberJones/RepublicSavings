@@ -1,20 +1,18 @@
 package com.example.republicsavingsapp
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import com.example.republicsavingsapp.ui.categories.Category
+import com.google.firebase.firestore.FirebaseFirestore
 
-@Database(
-    entities = [User::class, Expenses::class, Category::class],
-    version = 4, // was 3, added includeInBudget to Expenses
-    exportSchema = false
-)
-abstract class AppDatabase : RoomDatabase() {
-    abstract fun userDAO(): UserDAO
-    abstract fun expensesDAO(): ExpensesDAO
-    abstract fun categoryDAO(): CategoryDAO
+class AppDatabase private constructor() {
+    private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
+
+    private val userDAOImpl: UserDAO by lazy { FirestoreUserDAO(firestore) }
+    private val expensesDAOImpl: ExpensesDAO by lazy { FirestoreExpensesDAO(firestore) }
+    private val categoryDAOImpl: CategoryDAO by lazy { FirestoreCategoryDAO(firestore) }
+
+    fun userDAO(): UserDAO = userDAOImpl
+    fun expensesDAO(): ExpensesDAO = expensesDAOImpl
+    fun categoryDAO(): CategoryDAO = categoryDAOImpl
 
     companion object {
         @Volatile
@@ -22,14 +20,7 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun getDatabase(context: Context): AppDatabase {
             return Instance ?: synchronized(this) {
-                Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "user_database"
-                )
-                    .fallbackToDestructiveMigration()
-                    .build()
-                    .also { Instance = it }
+                Instance ?: AppDatabase().also { Instance = it }
             }
         }
     }

@@ -233,6 +233,41 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- Log out row -->
+        <LinearLayout
+            android:id="@+id/logoutRow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            app:layout_constraintTop_toBottomOf="@id/preferencesCard"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_logout"
+                app:tint="?attr/colorError"
+                android:contentDescription="@null" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:text="Log out"
+                android:textColor="?attr/colorError"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
         <!-- SECURITY section header -->
         <TextView
             android:id="@+id/securityHeader"
@@ -242,84 +277,233 @@
             android:text="SECURITY"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/preferencesCard"
+            app:layout_constraintTop_toBottomOf="@id/logoutRow"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <!-- Security card -->
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!-- Security card: holds both states, only one visible at a time -->
+        <FrameLayout
             android:id="@+id/securityCard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="16dp"
-            android:padding="20dp"
             app:layout_constraintTop_toBottomOf="@id/securityHeader"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
 
-            <ImageView
-                android:id="@+id/lockIcon"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_lock"
-                android:contentDescription="Locked"
-                app:tint="?attr/colorOnSurface"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <TextView
-                android:id="@+id/accountLockedTitle"
-                android:layout_width="wrap_content"
+            <!-- LOCKED STATE -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/lockedContent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="Account details are locked"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/lockIcon"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:padding="20dp">
 
-            <TextView
-                android:id="@+id/accountLockedSubtitle"
-                android:layout_width="0dp"
+                <ImageView
+                    android:id="@+id/lockIcon"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_lock"
+                    android:contentDescription="Locked"
+                    app:tint="?attr/colorOnSurface"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/accountLockedTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Biometric settings are locked"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/lockIcon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/accountLockedSubtitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:text="Enter your password to manage your biometric login"
+                    android:textSize="12sp"
+                    app:layout_constraintTop_toBottomOf="@id/accountLockedTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <EditText
+                    android:id="@+id/unlockPassword"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="Enter your password"
+                    android:inputType="textPassword"
+                    android:autofillHints="password"
+                    android:padding="14dp"
+                    app:layout_constraintTop_toBottomOf="@id/accountLockedSubtitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <!-- Shown when the password is wrong -->
+                <TextView
+                    android:id="@+id/unlockError"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Incorrect password"
+                    android:textColor="?attr/colorError"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    app:layout_constraintTop_toBottomOf="@id/unlockPassword"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <Button
+                    android:id="@+id/unlockButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Unlock"
+                    app:layout_constraintTop_toBottomOf="@id/unlockError"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- UNLOCKED STATE -->
+            <LinearLayout
+                android:id="@+id/unlockedContent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:gravity="center"
-                android:text="Enter your password to view or edit your email and password"
-                android:textSize="12sp"
-                app:layout_constraintTop_toBottomOf="@id/accountLockedTitle"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
-            <!-- Password input -->
-            <EditText
-                android:id="@+id/unlockPassword"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Enter your password"
-                android:inputType="textPassword"
-                android:autofillHints="password"
-                android:padding="14dp"
-                app:layout_constraintTop_toBottomOf="@id/accountLockedSubtitle"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                <!-- Header row: unlocked icon, title, lock-again action -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="16dp">
 
-            <!-- Unlock button -->
-            <Button
-                android:id="@+id/unlockButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="Unlock"
-                app:layout_constraintTop_toBottomOf="@id/unlockPassword"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_lock_open"
+                        app:tint="?attr/colorOnSurface"
+                        android:contentDescription="Unlocked" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:text="Biometric login"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/lockAgainButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="4dp"
+                        android:text="Lock"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="?attr/colorPrimary"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackgroundBorderless" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?attr/colorSecondary"
+                    android:alpha="0.3" />
+
+                <!-- Add new fingerprint -->
+                <LinearLayout
+                    android:id="@+id/addFingerprintRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_fingerprint"
+                        app:tint="?attr/colorOnSurface"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:text="Add a new fingerprint"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="?attr/colorOnSurface"
+                        android:contentDescription="@null" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?attr/colorSecondary"
+                    android:alpha="0.3" />
+
+                <!-- Remove biometric data (destructive, so it uses the error color) -->
+                <LinearLayout
+                    android:id="@+id/removeBiometricRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_delete"
+                        app:tint="?attr/colorError"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:text="Remove biometric login data"
+                        android:textColor="?attr/colorError"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
