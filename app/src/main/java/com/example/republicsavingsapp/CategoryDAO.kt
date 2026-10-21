@@ -1,7 +1,8 @@
 package com.example.republicsavingsapp
-import androidx.room3.Dao
-import androidx.room3.Insert
-import androidx.room3.Query
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
 import com.example.republicsavingsapp.ui.categories.Category
 
 @Dao

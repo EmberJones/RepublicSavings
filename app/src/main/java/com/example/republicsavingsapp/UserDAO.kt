@@ -1,9 +1,9 @@
 package com.example.republicsavingsapp
 
-import androidx.room3.Dao
-import androidx.room3.Insert
-import androidx.room3.OnConflictStrategy
-import androidx.room3.Query
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
 @Dao
 interface UserDAO {
@@ -21,5 +21,4 @@ interface UserDAO {
 
     @Query("Update users set userPassword = :newPassword Where email = :email")
     suspend fun updatePassword(email: String?, newPassword: String)
-
 }
