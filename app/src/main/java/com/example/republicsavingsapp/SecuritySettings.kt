@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.Switch
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -13,8 +14,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlin.math.log
 
 class SecuritySettings : Fragment() {
     private lateinit var biometricSwitch: Switch
@@ -50,6 +53,10 @@ class SecuritySettings : Fragment() {
     }
 
     private fun createAccount() {
+        val app = requireActivity().application as RepublicSavingsApp
+        val appContext = requireContext().applicationContext
+        val mainActivity = requireActivity() as MainActivity
+
         val newUser = User(
             userName = viewModel.username,
             userSurname = viewModel.surname,
@@ -59,33 +66,54 @@ class SecuritySettings : Fragment() {
             biometricEnabled = viewModel.biometricEnabled
         )
 
+        //stop double taps when run is called
+        createAccountButton.isEnabled = false
+        skipButton.isEnabled = false
+
+
         lifecycleScope.launch {
             try {
-                val app = requireActivity().application as RepublicSavingsApp
-                app.userRepository.addUser(newUser)
+                //return new ID generated for new user
+                val newId = app.userRepository.addUser(newUser)
 
                 if (newUser.email.isNotEmpty() && newUser.userPassword.isNotEmpty()) {
                     try {
-                        Firebase.auth.createUserWithEmailAndPassword(newUser.email, newUser.userPassword).await()
+                        Firebase.auth.createUserWithEmailAndPassword(
+                            newUser.email,
+                            newUser.userPassword
+                        ).await()
+                    } catch (e: CancellationException) {
+                        throw e //never swallow cancellation
                     } catch (e: Exception) {
                         Log.w("Register", "Firebase Auth user creation error: ${e.message}")
                     }
                 }
 
-                Toast.makeText(requireContext(), "Account Created Successfully", Toast.LENGTH_SHORT).show()
+                //log new user in from sign up straight away
+                CurrentUser.setUser(newUser.copy(userID = newId))
+                SessionManager.saveUserId(appContext, newId)
 
-                val fragmentManager = requireActivity().supportFragmentManager
+                Toast.makeText(appContext, "Account Created Successfully", Toast.LENGTH_SHORT)
+                    .show()
+
+                val fragmentManager = mainActivity.supportFragmentManager
 
                 while (fragmentManager.backStackEntryCount > 0) {
                     fragmentManager.popBackStackImmediate()
                 }
 
-                fragmentManager.beginTransaction()
-                    .replace(R.id.auth_container, Login())
-                    .commit()
+                mainActivity.showMainApp()
 
+
+            } catch(e: CancellationException){
+                throw e
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error creating account: ${e.message}", Toast.LENGTH_SHORT).show()
+                Log.e("Register", "Account Creation Failed", e)
+                Toast.makeText(appContext, "Error creating account: ${e.message}", Toast.LENGTH_SHORT).show()
+                if(isAdded){
+                    createAccountButton.isEnabled = true
+                    skipButton.isEnabled = true
+                }
             }
         }
     }

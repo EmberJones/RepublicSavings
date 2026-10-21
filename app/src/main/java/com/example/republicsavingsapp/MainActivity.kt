@@ -6,9 +6,17 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.Dispatcher
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
@@ -44,8 +52,13 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+        val savedUserID = SessionManager.getUserId(this)
+
         if (CurrentUser.isLoggedIn) {
             showMainApp()
+        } else if (savedUserID != -1L) {
+            showAuthFlow() //keep home hidden while saved user loads
+            restoreSession(savedUserID)
         } else {
             if (savedInstanceState == null) {
                 supportFragmentManager.beginTransaction()
@@ -64,11 +77,60 @@ class MainActivity : AppCompatActivity() {
 
     fun onLoginSuccess() {
         showMainApp()
-        navController.navigate(R.id.homeFragment)
+        navController.navigate(R.id.homeFragment, null,
+            NavOptions.Builder().setPopUpTo(R.id.homeFragment, true).build())
     }
+
     fun showAuthFlow() {
         findViewById<View>(R.id.auth_container).visibility = View.VISIBLE
         findViewById<View>(R.id.navHostFragment).visibility = View.GONE
         findViewById<View>(R.id.bottomNav).visibility = View.GONE
+    }
+
+    //Calls session manager on startup when an id is saved
+    //Loads user from database or loads login screen
+    private fun restoreSession(userId: Long) {
+        val app = application as RepublicSavingsApp
+
+        lifecycleScope.launch {
+            //Look up user by saved ID
+            try {
+                val user = withContext(Dispatchers.IO) {
+                    app.userRepository.getUserById(userId)
+                }
+
+                if (user != null) {
+                    //user found, start up app from home screen
+                    CurrentUser.setUser(user)
+                    onLoginSuccess() //shows home screen and reloads it for current user
+                } else {
+                    //saved id does not match any user in database
+                    SessionManager.clear(this@MainActivity)
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.auth_container, Login())
+                        .commit()
+                    showAuthFlow()
+                }
+            } catch (e: Exception) {
+                //in the event of no internet, login shows but saves ID for next login
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.auth_container, Login())
+                    .commit()
+            }
+        }
+
+        //Log current user out
+        fun logout() {
+            Firebase.auth.signOut() //log out from Firebase
+            CurrentUser.clear() //wipe in memory user
+            SessionManager.clear(this) //wipe saved ID so launch doesn't auto login
+
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.auth_container, Login())
+                .commit()
+            showAuthFlow()
+        }
+
+
     }
 }

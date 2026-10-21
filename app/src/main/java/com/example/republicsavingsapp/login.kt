@@ -71,7 +71,12 @@ class Login : Fragment() {
                     }
                 }
 
-                CurrentUser.setUser(user)
+                if(user != null){
+                    CurrentUser.setUser(user)
+                    SessionManager.saveUserId(requireContext(), user.userID) //update for session manager
+                    (requireActivity() as MainActivity).onLoginSuccess()
+                }
+
                 Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
                 (requireActivity() as MainActivity).onLoginSuccess()
             }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -15,6 +16,7 @@ class CurrencySelection : Fragment() {
 
     private lateinit var currencyGroup: RadioGroup
     private lateinit var continueButton: Button
+    private lateinit var backButton: ImageButton
 
     private val viewModel: RegistrationViewModel by activityViewModels()
 
@@ -32,6 +34,7 @@ class CurrencySelection : Fragment() {
 
         currencyGroup = view.findViewById(R.id.currencyOptionGroup)
         continueButton = view.findViewById(R.id.continueButton)
+        backButton = view.findViewById(R.id.backButton)
 
         continueButton.setOnClickListener {
             val selectedCurrency = when (currencyGroup.checkedRadioButtonId){
@@ -49,6 +52,11 @@ class CurrencySelection : Fragment() {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.auth_container, SecuritySettings())
                 .addToBackStack(null)
+                .commit()
+        }
+        backButton.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.auth_container, Register())
                 .commit()
         }
     }
