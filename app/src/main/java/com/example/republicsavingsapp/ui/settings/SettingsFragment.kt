@@ -96,6 +96,14 @@ class SettingsFragment : Fragment() {
         }
     }
 
+
+
+
+
+
+
+
+
     // --- Unlock / reveal account details ---
 
     private fun setupUnlock() {
