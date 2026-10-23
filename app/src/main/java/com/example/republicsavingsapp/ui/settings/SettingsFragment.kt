@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.republicsavingsapp.CurrentUser
+import com.example.republicsavingsapp.MainActivity
 import com.example.republicsavingsapp.RepublicSavingsApp
 import com.example.republicsavingsapp.databinding.FragmentSettingsBinding
 import kotlinx.coroutines.launch
@@ -32,6 +33,7 @@ class SettingsFragment : Fragment() {
         setupTheme()
         setupCurrency()
         setupNotifications()
+        setupLogout()
         setupUnlock()
     }
 
@@ -96,12 +98,13 @@ class SettingsFragment : Fragment() {
         }
     }
 
+    // --- Logout Functionality ---
 
-
-
-
-
-
+    private fun setupLogout(){
+        binding.logoutRow.setOnClickListener {
+            (requireActivity() as MainActivity).logout()
+        }
+    }
 
 
     // --- Unlock / reveal account details ---

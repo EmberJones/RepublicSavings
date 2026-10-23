@@ -34,11 +34,4 @@ object SessionManager {
             .edit().remove(KEY_USER_ID)
             .apply()
     }
-
-
-
-
-
-
-
 }

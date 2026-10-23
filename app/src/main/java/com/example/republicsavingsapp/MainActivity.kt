@@ -118,19 +118,19 @@ class MainActivity : AppCompatActivity() {
                     .commit()
             }
         }
-
-        //Log current user out
-        fun logout() {
-            Firebase.auth.signOut() //log out from Firebase
-            CurrentUser.clear() //wipe in memory user
-            SessionManager.clear(this) //wipe saved ID so launch doesn't auto login
-
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.auth_container, Login())
-                .commit()
-            showAuthFlow()
-        }
-
-
     }
+
+    //Log current user out
+    fun logout() {
+        Firebase.auth.signOut()
+        CurrentUser.clear()
+        SessionManager.clear(this)
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.auth_container, Login())
+            .commit()
+        showAuthFlow()
+    }
+
+
 }
