@@ -93,6 +93,9 @@ class SecuritySettings : Fragment() {
                 CurrentUser.setUser(newUser.copy(userID = newId))
                 SessionManager.saveUserId(appContext, newId)
 
+                //if biometrics are enabled, enable quick signup for user
+                if(newUser.biometricEnabled) SessionManager.saveQuickUserId(appContext, newId)
+
                 Toast.makeText(appContext, "Account Created Successfully", Toast.LENGTH_SHORT)
                     .show()
 

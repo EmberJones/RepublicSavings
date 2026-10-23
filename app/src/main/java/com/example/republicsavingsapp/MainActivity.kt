@@ -98,11 +98,27 @@ class MainActivity : AppCompatActivity() {
                 val user = withContext(Dispatchers.IO) {
                     app.userRepository.getUserById(userId)
                 }
-
-                if (user != null) {
-                    //user found, start up app from home screen
-                    CurrentUser.setUser(user)
-                    onLoginSuccess() //shows home screen and reloads it for current user
+                if(user != null){
+                    //only ask for phone lock if user has opted in and their phone has it
+                    if(user.biometricEnabled && PasskeyAuth.isAvailable(this@MainActivity)){
+                        PasskeyAuth.prompt(
+                            this@MainActivity, "Unlock",
+                                    //set current user after passkey check is passed
+                                    onSuccess = { CurrentUser.setUser(user); onLoginSuccess() },
+                            //if passkey check fails, log user out
+                            onFailure = {
+                                supportFragmentManager.beginTransaction()
+                                    .replace(R.id.auth_container, Login())
+                                    .commit()
+                                showAuthFlow()
+                            }
+                        )
+                    } else {
+                        //no phone lock needed
+                        //user found, start up app from home screen
+                        CurrentUser.setUser(user)
+                        onLoginSuccess() //shows home screen and reloads it for current user
+                    }
                 } else {
                     //saved id does not match any user in database
                     SessionManager.clear(this@MainActivity)
