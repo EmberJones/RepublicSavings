@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Selected icon on the colored pill -->
+    <item android:state_selected="true" android:color="?attr/colorOnPrimary" />
+    <item android:state_checked="true" android:color="?attr/colorOnPrimary" />
+    <!-- Unselected icons -->
+    <item android:color="?attr/colorSecondary" />
+</selector>

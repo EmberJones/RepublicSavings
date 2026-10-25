@@ -34,4 +34,10 @@
         android:label="Add Transaction"
         tools:layout="@layout/fragments_add_transaction" />
 
+    <fragment
+        android:id="@+id/rewardsFragment"
+        android:name="com.example.republicsavingsapp.ui.rewards.RewardsFragment"
+        android:label="Rewards"
+        tools:layout="@layout/fragment_rewards" />
+
 </navigation>

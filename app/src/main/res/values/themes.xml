@@ -18,5 +18,17 @@
 
     </style>
 
+    <!-- Bottom navigation bar -->
+    <style name="Widget.RepublicSavingsApp.BottomNavigation" parent="Widget.Material3.BottomNavigationView">
+        <item name="backgroundTint">?attr/colorSurface</item>
+        <item name="itemIconTint">@color/bottom_nav_icon_color</item>
+        <item name="itemTextColor">@color/bottom_nav_label_color</item>
+        <item name="itemActiveIndicatorStyle">@style/Widget.RepublicSavingsApp.BottomNavigation.ActiveIndicator</item>
+    </style>
+
+    <style name="Widget.RepublicSavingsApp.BottomNavigation.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">?attr/colorPrimary</item>
+    </style>
+
     <style name="Theme.RepublicSavingsApp" parent="Base.Theme.RepublicSavingsApp" />
 </resources>

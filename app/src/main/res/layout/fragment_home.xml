@@ -62,6 +62,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
+            <!-- Percentage label, centered on top of the ring -->
+
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/budgetProgress"
                 android:layout_width="80dp"
@@ -69,12 +71,13 @@
                 app:indicatorSize="80dp"
                 app:trackThickness="8dp"
                 app:indicatorDirectionCircular="clockwise"
+                app:indicatorColor="?attr/colorPrimary"
+                app:trackColor="?attr/colorSecondary"
                 android:max="100"
                 android:progress="64"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <!-- Percentage label, centered on top of the ring -->
             <TextView
                 android:id="@+id/budgetPercentText"
                 android:layout_width="wrap_content"

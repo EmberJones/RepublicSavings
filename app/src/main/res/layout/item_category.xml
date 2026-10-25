@@ -65,7 +65,9 @@
             tools:progress="85"
             app:layout_constraintTop_toBottomOf="@id/categoryIcon"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:indicatorColor="?attr/colorPrimary"
+            app:trackColor="?attr/colorSecondary" />/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

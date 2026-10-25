@@ -3,6 +3,9 @@ package com.example.republicsavingsapp
 import android.app.Application
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.republicsavingsapp.fair.FirestoreTicketDAO
+import com.example.republicsavingsapp.fair.TicketRepository
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.FirebaseApp
 
 class RepublicSavingsApp : Application() {
@@ -13,6 +16,8 @@ class RepublicSavingsApp : Application() {
     lateinit var expenseRepository: ExpenseRepository
     lateinit var userRepository: UserRepository
     lateinit var categoryRepository: CategoryRepository
+
+    lateinit var ticketRepository: TicketRepository
 
     override fun onCreate() {
         super.onCreate()
@@ -32,5 +37,10 @@ class RepublicSavingsApp : Application() {
         expenseRepository = ExpenseRepository(expensesDAO)
         userRepository = UserRepository(userDAO, expensesDAO)
         categoryRepository = CategoryRepository(categoryDAO)
+        ticketRepository = TicketRepository(
+            FirestoreTicketDAO(FirebaseFirestore.getInstance()),
+            expensesDAO,
+            categoryDAO
+        )
     }
 }
