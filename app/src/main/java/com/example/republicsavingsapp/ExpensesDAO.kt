@@ -2,7 +2,10 @@ package com.example.republicsavingsapp
 
 interface ExpensesDAO {
     suspend fun AddExpense(expenses: Expenses): Long    // insert
+    // replaces the stored values of the expense with this Firestore document id
+    suspend fun updateExpense(docId: String, expense: Expenses)
 
+    suspend fun deleteExpense(docId: String)
     suspend fun AddUser(users: User): Long  // insert
 
     //@Query("SELECT * FROM users WHERE userID = :userID LIMIT 1")
@@ -26,8 +29,8 @@ interface ExpensesDAO {
     //@Query("SELECT * FROM expenses WHERE expenseDate > :firstDate AND expenseDate < :lastDate ORDER BY expenseDate ASC")
     suspend fun getAllExpensesBetween(firstDate: Long, lastDate: Long): List<Expenses>
 
-    //@Query("""SELECT expenseCategory AS category, SUM(CAST(expenseAmount AS REAL)) AS total FROM expenses WHERE userID = :activeUserID AND expenseDate BETWEEN :startDate AND :endDate GROUP BY expenseCategory""")
-    suspend fun getTotalsByCategory(activeUserID: Long, startDate: Long, endDate: Long): List<CategoryTotal>
+    // Only expenses are totalled (never income). With budgetedOnly = true, expenses the user excluded from the budget are left out too.
+    suspend fun getTotalsByCategory(activeUserID: Long, startDate: Long, endDate: Long, budgetedOnly: Boolean = false): List<CategoryTotal>
     //@Query("SELECT * FROM expenses WHERE userID = :activeUserID ORDER BY uploaded DESC")
     suspend fun getAllFromUser(activeUserID: Long): List<Expenses>
 

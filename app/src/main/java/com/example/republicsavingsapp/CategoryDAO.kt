@@ -5,4 +5,8 @@ interface CategoryDAO {
     suspend fun addCategory(category: Category): Long
 
     suspend fun getAllForUser(activeUserID: Long): List<Category>
+
+    suspend fun updateCategory(docId: String, category: Category)
+
+    suspend fun deleteCategory(docId: String)
 }

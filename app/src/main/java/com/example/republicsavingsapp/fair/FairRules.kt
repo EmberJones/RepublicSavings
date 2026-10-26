@@ -40,7 +40,6 @@ data class Spend(val date: LocalDate, val amount: Double) {
 
 enum class TicketPeriod { WEEK, MONTH }
 
-/** A ticket the user has earned for a completed week or month. */
 data class TicketAward(
     val period: TicketPeriod,
     val periodKey: String,          // e.g. "2026-W37" or "2026-09"
@@ -48,12 +47,7 @@ data class TicketAward(
     val periodEnd: LocalDate,
     val savedUnderBudget: Double    // how far under the allowance the user finished; determines prize tiers
 ) {
-    /**
-     * Deterministic Firestore document id. Writing a ticket with this id means checking the same
-     * period again can never create a second ticket for it.
-     */
-    fun documentId(userId: Long): String = "${userId}_${period.name.lowercase(Locale.ROOT)}_$periodKey"
-}
+    val recordKey: String get() = "${period.name.lowercase(Locale.ROOT)}_$periodKey"}
 
 /** Wheel prize tiers. Weights set how likely each tier is when it is eligible. */
 enum class PrizeTier(val value: Int, val weight: Int, val examples: List<String>) {

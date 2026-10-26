@@ -49,11 +49,11 @@ class FairRulesTest {
     }
 
     @Test
-    fun documentId_isDeterministicPerUserAndPeriod() {
+    fun recordKey_identifiesTheWeekOrMonth() {
         val week = TicketAward(TicketPeriod.WEEK, "2026-W37", d(2026, 9, 7), d(2026, 9, 13), 500.0)
         val month = TicketAward(TicketPeriod.MONTH, "2026-09", d(2026, 9, 1), d(2026, 9, 30), 500.0)
-        assertEquals("42_week_2026-W37", week.documentId(42))
-        assertEquals("42_month_2026-09", month.documentId(42))
+        assertEquals("week_2026-W37", week.recordKey)
+        assertEquals("month_2026-09", month.recordKey)
     }
 
     // ---- week tickets ----

@@ -3,7 +3,8 @@ package com.example.republicsavingsapp
 import android.app.Application
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.republicsavingsapp.fair.FirestoreTicketDAO
+import com.example.republicsavingsapp.fair.FirestoreFairStateDAO
+import com.example.republicsavingsapp.fair.SharedPreferencesFairStore
 import com.example.republicsavingsapp.fair.TicketRepository
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.FirebaseApp
@@ -38,7 +39,8 @@ class RepublicSavingsApp : Application() {
         userRepository = UserRepository(userDAO, expensesDAO)
         categoryRepository = CategoryRepository(categoryDAO)
         ticketRepository = TicketRepository(
-            FirestoreTicketDAO(FirebaseFirestore.getInstance()),
+            FirestoreFairStateDAO(FirebaseFirestore.getInstance()),
+            SharedPreferencesFairStore(applicationContext),
             expensesDAO,
             categoryDAO
         )

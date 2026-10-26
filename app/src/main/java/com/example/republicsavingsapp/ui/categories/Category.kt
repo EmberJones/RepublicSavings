@@ -6,5 +6,7 @@ data class Category(
     val userId: Long,
     val categoryName: String,
     val categoryIcon: String,
-    val monthlyMax: Double
+    val monthlyMax: Double,
+    val monthlyMin: Double = 0.0,
+    val docId: String = ""
 )

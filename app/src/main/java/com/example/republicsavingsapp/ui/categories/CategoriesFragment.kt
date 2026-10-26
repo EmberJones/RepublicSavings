@@ -57,17 +57,29 @@ class CategoriesFragment : Fragment() {
     private fun saveCategory() {
         val name = binding.categoryNameInput.text.toString().trim()
         val monthlyMax = binding.monthlyMaxInput.text.toString().trim().toDoubleOrNull()
-        if (name.isEmpty()) { Toast.makeText(requireContext(), "Give the category a name", Toast.LENGTH_SHORT).show(); return }
-        if (monthlyMax == null || monthlyMax <= 0) { Toast.makeText(requireContext(), "Enter a valid monthly maximum", Toast.LENGTH_SHORT).show(); return }
+        // The minimum is optional: blank means "no minimum goal" (0).
+        val minText = binding.monthlyMinInput.text.toString().trim()
+        val monthlyMin = if (minText.isEmpty()) 0.0 else minText.toDoubleOrNull()
+
+        if (name.isEmpty()) { toast("Give the category a name"); return }
+        if (monthlyMax == null || monthlyMax <= 0) { toast("Enter a valid monthly maximum"); return }
+        if (monthlyMin == null || monthlyMin < 0) { toast("Enter a valid monthly minimum, or leave it blank"); return }
+        if (monthlyMin > monthlyMax) { toast("The minimum can't be higher than the maximum"); return }
 
         val repo = (requireActivity().application as RepublicSavingsApp).categoryRepository
         lifecycleScope.launch {
-            repo.addCategory(CurrentUser.userID, name, selectedIcon, monthlyMax)
-            binding.categoryNameInput.text?.clear()
-            binding.monthlyMaxInput.text?.clear()
+            repo.addCategory(CurrentUser.userID, name, selectedIcon, monthlyMax, monthlyMin)
+            _binding?.let {
+                it.categoryNameInput.text?.clear()
+                it.monthlyMaxInput.text?.clear()
+                it.monthlyMinInput.text?.clear()
+            }
             loadCategories()
         }
     }
+
+    private fun toast(message: String) =
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
 
     override fun onDestroyView() { super.onDestroyView(); _binding = null }
 }
