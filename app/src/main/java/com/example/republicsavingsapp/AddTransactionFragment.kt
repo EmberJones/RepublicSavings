@@ -2,8 +2,11 @@ package com.example.republicsavingsapp.ui.transaction
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.ActivityNotFoundException
+import android.content.ContentResolver
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +16,9 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.FileProvider
+import androidx.exifinterface.media.ExifInterface
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -29,6 +35,8 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import com.example.republicsavingsapp.Expenses
+import java.io.File
+
 class AddTransactionFragment : Fragment() {
     private var _binding: FragmentsAddTransactionBinding? = null
     private val binding get() = _binding!!
@@ -40,6 +48,16 @@ class AddTransactionFragment : Fragment() {
     private val photoPicker = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) savePickedImage(uri)
     }
+
+    //Camera app will save photo it's about to take
+    private var cameraImageUri : Uri? = null
+
+    //runs when cam closes, success (true) if photo was indeed taken
+    private val takePhoto = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+        val uri = cameraImageUri
+        if (success && uri != null) savePickedImage(uri) //same pipeline as gallery photos
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentsAddTransactionBinding.inflate(inflater, container, false)
@@ -171,7 +189,34 @@ class AddTransactionFragment : Fragment() {
 
     private fun setupPhotoPicker() {
         binding.receiptPhotoTarget.setOnClickListener {
-            photoPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            val options = arrayOf("Take Photo", "Choose From Gallery")
+            AlertDialog.Builder(requireContext())
+                .setTitle("Add Photo")
+                .setItems(options) { _, which -> if (which == 0) {
+                        launchCamera()
+                    } else {
+                        photoPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    }
+                }
+                .show()
+        }
+    }
+
+    private fun launchCamera() {
+        try {
+            //make temp file to store image
+            val appContext = requireContext().applicationContext
+            val dir = File(appContext.cacheDir, "receipts").apply { mkdirs() }
+            val file = File.createTempFile("receipt_", ".jpg", dir)
+            val uri = FileProvider.getUriForFile(
+                appContext,
+                "${appContext.packageName}.fileprovider",
+                file
+            )
+            cameraImageUri = uri
+            takePhoto.launch(uri)
+        } catch (e: ActivityNotFoundException) {
+            toast("No camera app found")
         }
     }
 
@@ -199,11 +244,35 @@ class AddTransactionFragment : Fragment() {
         val options = BitmapFactory.Options().apply { inSampleSize = sample }
         val bitmap = resolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, options) }
             ?: return null
+
+        //shrink to maxSide on Longest edge
         val longest = maxOf(bitmap.width, bitmap.height)
-        if (longest <= maxSide) return bitmap
-        val scale = maxSide.toFloat() / longest
-        return Bitmap.createScaledBitmap(bitmap, (bitmap.width * scale).toInt(), (bitmap.height * scale).toInt(), true)
+        val scaled = if (longest <= maxSide) return bitmap else{
+            val scale = maxSide.toFloat() / longest
+            Bitmap.createScaledBitmap(bitmap, (bitmap.width * scale).toInt(),
+                (bitmap.height * scale).toInt(), true)
+        }
+
+        //turn upright if photo's orientation note states it is rotated
+        val rotation = readRotation(resolver, uri)
+        if (rotation == 0 ) return scaled
+        val matrix = Matrix().apply{postRotate(rotation.toFloat())}
+        return Bitmap.createBitmap(scaled, 0, 0, scaled.width, scaled.height, matrix, true)
     }
+
+    private fun readRotation(resolver: android.content.ContentResolver, uri: Uri): Int {
+        val orientation = resolver.openInputStream(uri)?.use {
+            ExifInterface(it).getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_NORMAL)
+        } ?: ExifInterface.ORIENTATION_NORMAL
+        return when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> 90
+            ExifInterface.ORIENTATION_ROTATE_180 -> 180
+            ExifInterface.ORIENTATION_ROTATE_270 -> 270
+            else -> 0
+        }
+    }
+
 
     private fun saveTransaction() {
         val isIncome = type == TransactionType.INCOME
