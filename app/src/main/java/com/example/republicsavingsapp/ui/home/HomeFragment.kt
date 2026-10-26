@@ -29,6 +29,7 @@ import com.google.android.material.color.MaterialColors
 import com.google.android.material.color.MaterialColors.getColor
 import kotlinx.coroutines.launch
 import java.util.Calendar
+import com.example.republicsavingsapp.databinding.ItemGoalProgressBinding
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -59,13 +60,14 @@ class HomeFragment : Fragment() {
                 setOnMenuItemClickListener { item ->
                     period = Period.values()[item.itemId]
                     binding.periodButton.text = "${period.label} ▾"
-                    loadGoalsChart()
+                    loadGoalsChart() // only the chart follows the selector
                     true
                 }
             }.show()
         }
         loadBudgetSummary()
         loadGoalsChart()
+        loadGoalProgress() // the progress section is always the last 30 days
     }
 
     /** Budget ring: current calendar month, budgeted expenses only. */
@@ -181,7 +183,49 @@ class HomeFragment : Fragment() {
             invalidate()
         }
     }
+    /** Progress bars for the last 30 days, independent of the chart's period selector. */
+    private fun loadGoalProgress() {
+        android.util.Log.d("GoalProgress", "loadGoalProgress called")
+        val app = requireActivity().application as RepublicSavingsApp
+        val (start, end) = periodRange(30)
+        viewLifecycleOwner.lifecycleScope.launch {
+            val categories = app.categoryRepository.getCategoriesForUser(CurrentUser.userID)
+            val totals = app.expenseRepository.getTotalsByCategory(start, end, budgetedOnly = true)
+            android.util.Log.d("GoalProgress", "categories=${categories.size}, totals=${totals.size}, binding=${_binding != null}")
+            val b = _binding ?: return@launch
+            drawGoalProgress(b, categories, totals)
+        }
+    }
 
+    private fun drawGoalProgress(b: FragmentHomeBinding, categories: List<Category>, totals: List<CategoryTotal>) {
+        android.util.Log.d("GoalProgress", "drawGoalProgress called")
+        val spentByName = totals.associate { it.category to it.total }
+        b.goalProgressList.removeAllViews()
+        for (cat in categories) {
+            val progress = GoalProgress(spentByName[cat.categoryName] ?: 0.0, cat.monthlyMin, cat.monthlyMax)
+            val row = ItemGoalProgressBinding.inflate(layoutInflater, b.goalProgressList, false)
+
+            val (color, statusText) = when (progress.status) {
+                GoalStatus.OVER_MAX ->
+                    0xFFD32F2F.toInt() to "Over by ${CurrencyFormatter.formatWhole(-progress.remaining)}"
+                GoalStatus.UNDER_MIN ->
+                    0xFFEF6C00.toInt() to "${CurrencyFormatter.formatWhole(cat.monthlyMin - progress.spent)} below minimum"
+                GoalStatus.ON_TRACK ->
+                    0xFF388E3C.toInt() to "${CurrencyFormatter.formatWhole(progress.remaining)} left"
+            }
+
+            row.goalName.text = cat.categoryName
+            row.goalStatus.text = statusText
+            row.goalStatus.setTextColor(color)
+            row.goalBar.setIndicatorColor(color)
+            row.goalBar.progress = (progress.fraction * 100).toInt().coerceIn(0, 100)
+            val minPart = if (cat.monthlyMin > 0) " · min ${CurrencyFormatter.formatWhole(cat.monthlyMin)}" else ""
+            row.goalAmounts.text =
+                "${CurrencyFormatter.formatWhole(progress.spent)} of ${CurrencyFormatter.formatWhole(cat.monthlyMax)}$minPart"
+
+            b.goalProgressList.addView(row.root)
+        }
+    }
     /** Start of the day (days - 1) ago until the end of today. */
     private fun periodRange(days: Int): Pair<Long, Long> {
         val cal = Calendar.getInstance()
