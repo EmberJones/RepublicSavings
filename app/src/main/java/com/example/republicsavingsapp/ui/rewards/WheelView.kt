@@ -23,20 +23,39 @@ class WheelView @JvmOverloads constructor(
 
     data class Slice(
         val label: String,
+        val name: String,
         val tier: PrizeTier,
         val color: Int
     )
 
-    private val slices = listOf(
-        Slice("Pizza", PrizeTier.SMALL, Color.parseColor("#4F772D")),
-        Slice("Movie", PrizeTier.SMALL, Color.parseColor("#FDC500")),
-        Slice("Aquarium", PrizeTier.MEDIUM, Color.parseColor("#DDA15E")),
-        Slice("Pizza", PrizeTier.SMALL, Color.parseColor("#31572C")),
-        Slice("Dinner", PrizeTier.MEDIUM, Color.parseColor("#BC6C25")),
-        Slice("Surfing", PrizeTier.LARGE, Color.parseColor("#606C38")),
-        Slice("Movie", PrizeTier.SMALL, Color.parseColor("#FDC500")),
-        Slice("Sandboard", PrizeTier.LARGE, Color.parseColor("#283618"))
-    )
+    private val palette = listOf(
+        "#4F772D", "#FDC500", "#DDA15E", "#31572C", "#BC6C25", "#606C38", "#283618"
+    ).map { Color.parseColor(it) }
+
+    private var slices: List<Slice> = buildSlices(PrizeTier.values().toList())
+
+    fun setTiers(tiers: List<PrizeTier>) {
+        if (isSpinning) return
+        slices = buildSlices(tiers.ifEmpty { PrizeTier.values().toList() })
+        invalidate()
+    }
+
+    private fun buildSlices(tiers: List<PrizeTier>): List<Slice> =
+        tiers.flatMap { tier -> tier.examples.map { name -> tier to name } }
+            .mapIndexed { i, (tier, name) ->
+                Slice(shortLabel(name), name, tier, palette[i % palette.size])
+            }
+
+    private fun shortLabel(name: String) = when (name) {
+        "Movie tickets" -> "Movie"
+        "Aquarium tickets" -> "Aquarium"
+        "A nice dinner" -> "Dinner"
+        "Surfing gear rental" -> "Surfing"
+        "Sandboarding" -> "Sandboard"
+        "Whale watching tour" -> "Whales"
+        else -> name
+    }
+
 
     private val slicePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
@@ -124,10 +143,10 @@ class WheelView @JvmOverloads constructor(
         if (isSpinning) return
         isSpinning = true
 
-        val matchingIndices = slices.indices.filter {
-            slices[it].tier == prize.tier || slices[it].label.equals(prize.name, ignoreCase = true)
-        }
-        val targetIndex = if (matchingIndices.isNotEmpty()) matchingIndices.random() else slices.indices.random()
+        val exact = slices.indices.filter { slices[it].name.equals(prize.name, ignoreCase = true) }
+        val targetIndex = exact.randomOrNull()
+            ?: slices.indices.filter { slices[it].tier == prize.tier }.randomOrNull()
+            ?: slices.indices.random()
 
         val sliceSweep = 360f / slices.size
         val sliceCenterAngle = targetIndex * sliceSweep + sliceSweep / 2f
