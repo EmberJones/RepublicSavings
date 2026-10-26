@@ -17,7 +17,8 @@ import java.util.Locale
 
 class TransactionAdapter(
     private var items: List<Expenses>,
-    private val onReceiptClick: (String) -> Unit
+    private val onReceiptClick: (String) -> Unit,
+    private val onItemClick: (Expenses) -> Unit = {}
 ) : RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {
 
     fun updateData(newItems: List<Expenses>) {
@@ -30,7 +31,8 @@ class TransactionAdapter(
             ItemTransactionBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             ),
-            onReceiptClick
+            onReceiptClick,
+            onItemClick
         )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
@@ -38,14 +40,16 @@ class TransactionAdapter(
 
     override fun getItemCount() = items.size
 
-    class ViewHolder(
+       class ViewHolder(
         private val binding: ItemTransactionBinding,
-        private val onReceiptClick: (String) -> Unit
+        private val onReceiptClick: (String) -> Unit,
+        private val onItemClick: (Expenses) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private val defaultAmountColor = binding.transactionAmount.currentTextColor
 
         fun bind(expense: Expenses) {
+            binding.root.setOnClickListener { onItemClick(expense) }
             binding.transactionName.text = expense.expenseName
 
             // Date and time of day, e.g. "26 Oct, 14:30"

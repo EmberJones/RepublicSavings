@@ -24,6 +24,10 @@ import com.google.android.material.R
 import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.launch
 import java.util.Calendar
+import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
+import com.example.republicsavingsapp.ui.transaction.AddTransactionFragment
 
 class ExpenseFragment : Fragment() {
     private var _binding: FragmentExpenseBinding? = null
@@ -62,7 +66,8 @@ class ExpenseFragment : Fragment() {
 
         adapter = TransactionAdapter(
             emptyList(),
-            onReceiptClick =  { path -> showReceiptDialog(path) }
+            onReceiptClick = { path -> showReceiptDialog(path) },
+            onItemClick = { expense -> showActions(expense) }
         )
         binding.transactionsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.transactionsRecyclerView.adapter = adapter
@@ -116,7 +121,37 @@ class ExpenseFragment : Fragment() {
             filterExpenses(b.searchInput.text.toString())
         }
     }
+    private fun showActions(expense: Expenses) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(expense.expenseName)
+            .setItems(arrayOf("Edit", "Delete")) { _, which ->
+                if (which == 0) editExpense(expense) else confirmDelete(expense)
+            }
+            .show()
+    }
 
+    private fun editExpense(expense: Expenses) {
+        // Fully qualified: this file's "R" import is Material's, not the app's
+        findNavController().navigate(
+            com.example.republicsavingsapp.R.id.addTransactionFragment,
+            bundleOf(AddTransactionFragment.ARG_DOC_ID to expense.docId)
+        )
+    }
+
+    private fun confirmDelete(expense: Expenses) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Delete transaction?")
+            .setMessage("\"${expense.expenseName}\" will be permanently removed.")
+            .setNegativeButton("Cancel", null)
+            .setPositiveButton("Delete") { _, _ ->
+                val app = requireActivity().application as RepublicSavingsApp
+                lifecycleScope.launch {
+                    app.expenseRepository.deleteExpense(expense)
+                    if (_binding != null) loadBreakdown()
+                }
+            }
+            .show()
+    }
     private fun filterExpenses(query: String) {
         val filtered = if (query.isBlank()) {
             allExpenses

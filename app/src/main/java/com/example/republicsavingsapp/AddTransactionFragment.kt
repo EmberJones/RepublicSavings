@@ -28,7 +28,7 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-
+import com.example.republicsavingsapp.Expenses
 class AddTransactionFragment : Fragment() {
     private var _binding: FragmentsAddTransactionBinding? = null
     private val binding get() = _binding!!
@@ -36,7 +36,7 @@ class AddTransactionFragment : Fragment() {
     private var selectedDate: Long = System.currentTimeMillis() // date AND time of day
     private var photoFilePath: String? = null
     private var type = TransactionType.EXPENSE
-
+    private var editing: Expenses? = null
     private val photoPicker = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) savePickedImage(uri)
     }
@@ -60,16 +60,48 @@ class AddTransactionFragment : Fragment() {
     }
 
     private fun loadCategoriesIntoSpinner() {
-        val repo = (requireActivity().application as RepublicSavingsApp).categoryRepository
+        val app = requireActivity().application as RepublicSavingsApp
+        val editDocId = arguments?.getString(ARG_DOC_ID)
         viewLifecycleOwner.lifecycleScope.launch {
-            val loaded = repo.getCategoriesForUser(CurrentUser.userID)
+            val loaded = app.categoryRepository.getCategoriesForUser(CurrentUser.userID)
+            val existing = editDocId?.let { id ->
+                app.expenseRepository.getAllExpensesBetween(0L, Long.MAX_VALUE).firstOrNull { it.docId == id }
+            }
             val b = _binding ?: return@launch // screen was left while loading
             categories = loaded
             b.categorySpinner.adapter = ArrayAdapter(
                 requireContext(), android.R.layout.simple_spinner_dropdown_item,
                 loaded.map { it.categoryName }
             )
+            if (existing != null) { editing = existing; fillForm(b, existing) }
         }
+    }
+
+    /** Pre-fills the screen when editing an existing transaction. */
+    private fun fillForm(b: FragmentsAddTransactionBinding, e: Expenses) {
+        b.transactionNameInput.setText(e.expenseName)
+        b.amountInput.setText(e.expenseAmount)
+        b.descriptionInput.setText(e.expenseDescription.orEmpty())
+        b.includeInBudgetSwitch.isChecked = e.includeInBudget
+        selectedDate = e.expenseDate
+        updateDateText()
+        updateTimeText()
+        val index = categories.indexOfFirst { it.categoryName == e.expenseCategory }
+        if (index >= 0) b.categorySpinner.setSelection(index)
+
+        photoFilePath = e.photoFilePath
+        e.photoFilePath?.let { ImageUtils.base64ToBitmap(it) }?.let { bitmap ->
+            b.receiptPreviewImage.setImageBitmap(bitmap)
+            b.receiptPreviewImage.visibility = View.VISIBLE
+            b.receiptCameraIcon.visibility = View.GONE
+            b.receiptPhotoHint.visibility = View.GONE
+        }
+
+        type = e.type
+        b.typeToggle.check(
+            if (e.type == TransactionType.INCOME) b.incomeToggleButton.id else b.expenseToggleButton.id
+        )
+        applyType() // refreshes the title and button text for edit mode
     }
 
     /** Expense/Income toggle. Income has no category and never counts toward the budget. */
@@ -89,9 +121,11 @@ class AddTransactionFragment : Fragment() {
         binding.categoryLabel.visibility = expenseOnly
         binding.categorySpinner.visibility = expenseOnly
         binding.includeInBudgetCard.visibility = expenseOnly
-        binding.screenTitle.text = if (expense) "Add expense" else "Add income"
         binding.transactionNameInput.hint = if (expense) "e.g. Checkers" else "e.g. Salary"
-        binding.saveTransactionButton.text = if (expense) "Save expense" else "Save income"
+        val verb = if (editing != null) "Edit" else "Add"
+        binding.screenTitle.text = "$verb ${if (expense) "expense" else "income"}"
+        binding.saveTransactionButton.text =
+            if (editing != null) "Save changes" else if (expense) "Save expense" else "Save income"
     }
 
     private fun setupDatePicker() {
@@ -192,18 +226,33 @@ class AddTransactionFragment : Fragment() {
         binding.saveTransactionButton.isEnabled = false
         binding.saveTextButton.isEnabled = false
 
-        // Fragment scope (not view scope) so the save still finishes if the user leaves quickly
+        val existing = editing
         lifecycleScope.launch {
-            repo.addExpense(
-                name = name,
-                amount = amountText,
-                category = category,
-                includeInBudget = includeInBudget,
-                description = description,
-                date = selectedDate,
-                photoFilePath = photoFilePath,
-                type = type
-            )
+            if (existing != null) {
+                repo.updateExpense(
+                    existing.copy(
+                        expenseName = name,
+                        expenseDescription = description,
+                        expenseAmount = amountText,
+                        expenseCategory = category,
+                        includeInBudget = includeInBudget,
+                        photoFilePath = photoFilePath,
+                        expenseDate = selectedDate,
+                        type = type
+                    )
+                )
+            } else {
+                repo.addExpense(
+                    name = name,
+                    amount = amountText,
+                    category = category,
+                    includeInBudget = includeInBudget,
+                    description = description,
+                    date = selectedDate,
+                    photoFilePath = photoFilePath,
+                    type = type
+                )
+            }
             if (_binding != null) findNavController().popBackStack()
         }
     }
@@ -216,5 +265,6 @@ class AddTransactionFragment : Fragment() {
     companion object {
         /** Category label stored on income transactions. */
         const val INCOME_CATEGORY = "Income"
+        const val ARG_DOC_ID = "expenseDocId"
     }
 }
