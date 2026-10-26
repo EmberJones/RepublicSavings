@@ -5,7 +5,12 @@ Most budgeting apps connect to your bank and log everything automatically. We ch
 
 A demonstration and user starter guide can be located on youtube at: https://youtu.be/q3Tn3V3xsxw
 
-<img width="512" height="512" alt="WhatsApp Image 2026-09-20 at 11 08 29dark" src="https://github.com/user-attachments/assets/2a96552a-5c88-4618-9aa8-51a29c732a97" />
+<img width="200" height="200" alt="WhatsApp Image 2026-09-20 at 11 08 29dark" src="https://github.com/user-attachments/assets/2a96552a-5c88-4618-9aa8-51a29c732a97" />
+<p>
+  <img src="screenshots/home.png" width="200">
+  <img src="screenshots/login.png" width="200">
+  <img src="screenshots/add.png" width="200">
+</p>
 
 Set a budget that fits your life. Create weekly, monthly or annual budgets and watch your progress as you spend. The app shows what percentage you have used, how much you have left, and a recommended daily amount to help you stay on track.
 Log expenses your way. Use Express entry when you are in a hurry (just the amount and category), or In-depth entry when you want to add a description, the place you shopped, the date and even a photo of the receipt.
@@ -14,6 +19,12 @@ Search your spending. Filter your expenses by date range, category or amount to 
 Earn rewards at The Fair. Stay under your daily or weekly limits and you earn a ticket. Spend it at The Fair for a chance to win a small treat you can enjoy without breaking your budget, from a pizza night to a whale watching tour.
 Keep it private. Sign in with a password or biometrics. The app supports multiple users on the same device, and each person's data stays private to them. If you forget your password, account recovery has you covered.
 Make it yours. Switch between light, dark or system theme, and choose your default currency.
+
+<p>
+  <img src="screenshots/fair.png" width="200">
+  <img src="screenshots/categories.png" width="200">
+  <img src="screenshots/settings.png" width="200">
+</p>
 
 **Getting started**
   Open the app and create an account.
