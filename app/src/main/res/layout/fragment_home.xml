@@ -30,12 +30,27 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
             android:text=""
             tools:text="Jane Doe"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/greetingLabel"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ticketButton" />
+
+        <!-- Rewards ticket button (left of the add button) -->
+        <ImageButton
+            android:id="@+id/ticketButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/bg_circle_button"
+            android:src="@drawable/ic_ticket"
+            android:contentDescription="Rewards"
+            app:tint="?attr/colorOnSurface"
+            app:layout_constraintTop_toTopOf="@id/addButton"
+            app:layout_constraintBottom_toBottomOf="@id/addButton"
             app:layout_constraintEnd_toStartOf="@id/addButton" />
 
         <!-- Add button (top right) -->
@@ -158,8 +173,6 @@
             app:layout_constraintTop_toBottomOf="@id/byCategoryLabel"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
