@@ -79,8 +79,9 @@ class HomeFragment : Fragment() {
             val totals = app.expenseRepository.getTotalsByCategory(start, end, budgetedOnly = true)
             val b = _binding ?: return@launch
 
+            val existingNames = categories.map { it.categoryName }.toSet()
             val budget = categories.sumOf { it.monthlyMax }
-            val spent = totals.sumOf { it.total }
+            val spent = totals.filter { it.category in existingNames }.sumOf { it.total }
             val percent = if (budget > 0) ((spent / budget) * 100).toInt().coerceIn(0, 100) else 0
 
             b.budgetProgress.progress = percent

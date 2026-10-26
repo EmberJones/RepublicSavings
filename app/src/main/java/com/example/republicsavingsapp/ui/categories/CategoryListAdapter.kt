@@ -6,10 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.republicsavingsapp.CurrencyFormatter
 import com.example.republicsavingsapp.R
 import com.example.republicsavingsapp.databinding.ItemCategoryRowBinding
-import java.util.Locale
 
-class CategoryListAdapter(private var categories: List<Category>) :
-    RecyclerView.Adapter<CategoryListAdapter.ViewHolder>() {
+class CategoryListAdapter(
+    private var categories: List<Category>,
+    private val onItemClick: (Category) -> Unit = {}
+) : RecyclerView.Adapter<CategoryListAdapter.ViewHolder>() {
 
     fun updateData(newCategories: List<Category>) {
         categories = newCategories
@@ -17,15 +18,19 @@ class CategoryListAdapter(private var categories: List<Category>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder(ItemCategoryRowBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        ViewHolder(ItemCategoryRowBinding.inflate(LayoutInflater.from(parent.context), parent, false), onItemClick)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(categories[position])
     override fun getItemCount() = categories.size
 
-    class ViewHolder(private val binding: ItemCategoryRowBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(
+        private val binding: ItemCategoryRowBinding,
+        private val onItemClick: (Category) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(category: Category) {
             binding.rowCategoryName.text = category.categoryName
-            binding.rowCategoryMax.text = "${CurrencyFormatter.format(category.monthlyMax)} monthly max"
+            val minPart = if (category.monthlyMin > 0) " · ${CurrencyFormatter.format(category.monthlyMin)} min" else ""
+            binding.rowCategoryMax.text = "${CurrencyFormatter.format(category.monthlyMax)} monthly max$minPart"
             binding.rowCategoryIcon.setImageResource(when (category.categoryIcon) {
                 "food" -> R.drawable.ic_food
                 "heart" -> R.drawable.ic_heart
@@ -33,6 +38,7 @@ class CategoryListAdapter(private var categories: List<Category>) :
                 "paw" -> R.drawable.ic_paw
                 else -> R.drawable.ic_category_placeholder
             })
+            binding.root.setOnClickListener { onItemClick(category) }
         }
     }
 }
