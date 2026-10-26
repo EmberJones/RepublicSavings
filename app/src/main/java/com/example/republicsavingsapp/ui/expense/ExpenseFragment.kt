@@ -102,15 +102,18 @@ class ExpenseFragment : Fragment() {
 
     private fun loadBreakdown() {
         val app = requireActivity().application as RepublicSavingsApp
-        lifecycleScope.launch {
-            val (start, end) = currentRange()
-
+        val (start, end) = currentRange()
+        viewLifecycleOwner.lifecycleScope.launch {
             val totals = app.expenseRepository.getTotalsByCategory(start, end)
-            binding.totalAmountText.text = CurrencyFormatter.formatWhole(totals.sumOf { it.total })
-            setupPieChart(totals)
+            val expenses = app.expenseRepository.getAllExpensesBetween(start, end)
 
-            allExpenses = app.expenseRepository.getAllExpensesBetween(start, end)
-            filterExpenses(binding.searchInput.text.toString())
+
+            val b = _binding ?: return@launch
+
+            b.totalAmountText.text = CurrencyFormatter.formatWhole(totals.sumOf { it.total })
+            setupPieChart(totals)
+            allExpenses = expenses
+            filterExpenses(b.searchInput.text.toString())
         }
     }
 

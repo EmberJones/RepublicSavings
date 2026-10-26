@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_home -> R.id.homeFragment
                 R.id.nav_wallet -> R.id.expenseFragment
                 R.id.nav_add -> R.id.addTransactionFragment
+                R.id.nav_rewards -> R.id.rewardsFragment
                 R.id.nav_categories -> R.id.categoriesFragment
                 R.id.nav_settings -> R.id.settingsFragment
                 else -> return@setOnItemSelectedListener false
@@ -50,6 +51,19 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(destinationId)
             }
             true
+
+        }
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val tabId = when (destination.id) {
+                R.id.homeFragment -> R.id.nav_home
+                R.id.expenseFragment -> R.id.nav_wallet
+                R.id.addTransactionFragment -> R.id.nav_add
+                R.id.rewardsFragment -> R.id.nav_rewards
+                R.id.categoriesFragment -> R.id.nav_categories
+                R.id.settingsFragment -> R.id.nav_settings
+                else -> null
+            }
+            tabId?.let { bottomNav.menu.findItem(it)?.isChecked = true }
         }
 
         val savedUserID = SessionManager.getUserId(this)

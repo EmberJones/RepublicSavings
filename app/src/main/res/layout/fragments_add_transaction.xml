@@ -36,6 +36,35 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+        <!-- Expense / Income toggle -->
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/typeToggle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:singleSelection="true"
+            app:selectionRequired="true"
+            app:checkedButton="@id/expenseToggleButton"
+            app:layout_constraintTop_toBottomOf="@id/screenTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/expenseToggleButton"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Expense" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/incomeToggleButton"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Income" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
 
         <!-- Save (text action) -->
         <TextView
@@ -60,8 +89,7 @@
             android:layout_marginTop="28dp"
             android:text="Category"
             android:textSize="13sp"
-            app:layout_constraintTop_toBottomOf="@id/screenTitle"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/typeToggle"            app:layout_constraintStart_toStartOf="parent" />
 
         <!-- Category dropdown -->
         <Spinner
@@ -214,6 +242,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="20 September 2026" />
+        <TextView
+            android:id="@+id/timeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Time"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/dateInput"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/timeInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:padding="14dp"
+            android:drawableEnd="@drawable/ic_chevron_down"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintTop_toBottomOf="@id/timeLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="14:30" />
         <!-- Description label -->
         <TextView
             android:id="@+id/descriptionLabel"
@@ -222,8 +273,7 @@
             android:layout_marginTop="20dp"
             android:text="Description (optional)"
             android:textSize="13sp"
-            app:layout_constraintTop_toBottomOf="@id/dateInput"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/timeInput"            app:layout_constraintStart_toStartOf="parent" />
 
         <!-- Description input -->
         <EditText
