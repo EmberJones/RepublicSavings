@@ -9,6 +9,7 @@ import com.example.republicsavingsapp.CurrencyFormatter
 import com.example.republicsavingsapp.Expenses
 import com.example.republicsavingsapp.ImageUtils
 import com.example.republicsavingsapp.R
+import com.example.republicsavingsapp.TransactionType
 import com.example.republicsavingsapp.databinding.ItemTransactionBinding
 import java.io.File
 import java.text.SimpleDateFormat
@@ -42,16 +43,25 @@ class TransactionAdapter(
         private val onReceiptClick: (String) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        private val defaultAmountColor = binding.transactionAmount.currentTextColor
+
         fun bind(expense: Expenses) {
             binding.transactionName.text = expense.expenseName
 
-            val dateStr = SimpleDateFormat("d MMM", Locale.getDefault())
+            // Date and time of day, e.g. "26 Oct, 14:30"
+            val dateStr = SimpleDateFormat("d MMM, HH:mm", Locale.getDefault())
                 .format(expense.expenseDate)
             binding.transactionCategoryDate.text =
                 "${expense.expenseCategory} · $dateStr"
 
             val amount = expense.expenseAmount.toDoubleOrNull() ?: 0.0
-            binding.transactionAmount.text = "-${CurrencyFormatter.format(amount)}"
+            if (expense.type == TransactionType.INCOME) {
+                binding.transactionAmount.text = "+${CurrencyFormatter.format(amount)}"
+                binding.transactionAmount.setTextColor(0xFF388E3C.toInt()) // green
+            } else {
+                binding.transactionAmount.text = "-${CurrencyFormatter.format(amount)}"
+                binding.transactionAmount.setTextColor(defaultAmountColor)
+            }
 
             bindReceipt(expense.photoFilePath)
         }
