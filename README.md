@@ -8,7 +8,7 @@ A demonstration and user starter guide can be located on youtube at: https://you
 <img width="200" height="200" alt="WhatsApp Image 2026-09-20 at 11 08 29dark" src="https://github.com/user-attachments/assets/2a96552a-5c88-4618-9aa8-51a29c732a97" />
 <p>
   <img src="screenshots/home.png" width="200">
-  <img src="screenshots/login.png" width="200">
+  <img src="screenshots/transactions.png" width="200">
   <img src="screenshots/add.png" width="200">
 </p>
 
