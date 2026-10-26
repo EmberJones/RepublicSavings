@@ -90,6 +90,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onLoginSuccess() {
+        AppLog.d("Session", "Login success for user ${CurrentUser.userID}")
         showMainApp()
         navController.navigate(R.id.homeFragment, null,
             NavOptions.Builder().setPopUpTo(R.id.homeFragment, true).build())
@@ -105,7 +106,7 @@ class MainActivity : AppCompatActivity() {
     //Loads user from database or loads login screen
     private fun restoreSession(userId: Long) {
         val app = application as RepublicSavingsApp
-
+        AppLog.d("Session", "Restoring saved session for user $userId")
         lifecycleScope.launch {
             //Look up user by saved ID
             try {
@@ -142,6 +143,7 @@ class MainActivity : AppCompatActivity() {
                     showAuthFlow()
                 }
             } catch (e: Exception) {
+                AppLog.e("Session", "Could not restore session (offline?), showing login", e)
                 //in the event of no internet, login shows but saves ID for next login
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.auth_container, Login())
@@ -152,6 +154,7 @@ class MainActivity : AppCompatActivity() {
 
     //Log current user out
     fun logout() {
+        AppLog.d("Session", "User ${CurrentUser.userID} logged out")
         Firebase.auth.signOut()
         CurrentUser.clear()
         SessionManager.clear(this)

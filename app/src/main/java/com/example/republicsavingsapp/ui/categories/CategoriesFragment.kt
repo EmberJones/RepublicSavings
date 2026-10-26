@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.republicsavingsapp.AppLog
 import com.example.republicsavingsapp.CurrentUser
 import com.example.republicsavingsapp.R
 import com.example.republicsavingsapp.RepublicSavingsApp
@@ -143,6 +144,7 @@ class CategoriesFragment : Fragment() {
 
         val repo = (requireActivity().application as RepublicSavingsApp).categoryRepository
         val existing = editing
+        AppLog.d("Categories", if (existing != null) "Saving changes to \"${existing.categoryName}\"" else "Creating category \"$name\"")
         lifecycleScope.launch {
             if (existing != null) {
                 repo.updateCategory(

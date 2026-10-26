@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.republicsavingsapp.AppLog
 import com.example.republicsavingsapp.CurrentUser
 import com.example.republicsavingsapp.ImageUtils
 import com.example.republicsavingsapp.RepublicSavingsApp
@@ -227,6 +228,7 @@ class AddTransactionFragment : Fragment() {
         binding.saveTextButton.isEnabled = false
 
         val existing = editing
+        AppLog.d("AddTransaction", if (editing != null) "Saving changes to ${editing?.docId}" else "Saving new ${type.name.lowercase()}")
         lifecycleScope.launch {
             if (existing != null) {
                 repo.updateExpense(

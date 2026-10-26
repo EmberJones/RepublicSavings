@@ -12,6 +12,7 @@ class FirestoreCategoryDAO(private val firestore: FirebaseFirestore) : CategoryD
         val docRef = categories.document()
         val id = if (category.categoryID != 0) category.categoryID else (System.currentTimeMillis() % Int.MAX_VALUE).toInt()
         docRef.set(categoryData(category, id)).await()
+        AppLog.d("Categories", "Added category \"${category.categoryName}\" (max ${category.monthlyMax}, min ${category.monthlyMin})")
         return id.toLong()
     }
 
@@ -20,7 +21,9 @@ class FirestoreCategoryDAO(private val firestore: FirebaseFirestore) : CategoryD
             .whereEqualTo("userId", activeUserID)
             .get()
             .await()
-        return snapshot.documents.map { docToCategory(it, activeUserID) }
+        val result = snapshot.documents.map { docToCategory(it, activeUserID) }
+        AppLog.d("Categories", "Loaded ${result.size} categories")
+        return result
     }
 
     // merge keeps any fields this app doesn't know about; known fields are overwritten
@@ -28,11 +31,13 @@ class FirestoreCategoryDAO(private val firestore: FirebaseFirestore) : CategoryD
         categories.document(docId)
             .set(categoryData(category, category.categoryID), SetOptions.merge())
             .await()
+            AppLog.d("Categories", "Updated category doc $docId")
     }
 
     // Expenses that used this category are kept (they reference it by name)
     override suspend fun deleteCategory(docId: String) {
         categories.document(docId).delete().await()
+        AppLog.d("Categories", "Deleted category doc $docId")
     }
 
     private fun categoryData(category: Category, id: Int): Map<String, Any?> = mapOf(
@@ -62,6 +67,7 @@ class FirestoreExpensesDAO(private val firestore: FirebaseFirestore) : ExpensesD
         val docRef = firestore.collection("expenses").document()
         val id = if (expenses.expenseID != 0) expenses.expenseID else (System.currentTimeMillis() % Int.MAX_VALUE).toInt()
         docRef.set(expenseData(expenses, id)).await()
+        AppLog.d("Expenses", "Added ${expenses.type} \"${expenses.expenseName}\" in ${expenses.expenseCategory} (id=$id)")
         return id.toLong()
     }
 
@@ -70,10 +76,12 @@ class FirestoreExpensesDAO(private val firestore: FirebaseFirestore) : ExpensesD
         firestore.collection("expenses").document(docId)
             .set(expenseData(expense, expense.expenseID), SetOptions.merge())
             .await()
+        AppLog.d("Expenses", "Updated expense doc $docId")
     }
 
     override suspend fun deleteExpense(docId: String) {
         firestore.collection("expenses").document(docId).delete().await()
+        AppLog.d("Expenses", "Deleted expense doc $docId")
     }
 
     private fun expenseData(expenses: Expenses, id: Int): Map<String, Any?> = mapOf(
@@ -174,6 +182,7 @@ class FirestoreExpensesDAO(private val firestore: FirebaseFirestore) : ExpensesD
             .filter { it.expenseDate in startDate..endDate }
             .filter { it.type == TransactionType.EXPENSE }
             .filter { !budgetedOnly || it.includeInBudget }
+        AppLog.d("Expenses", "Totals: ${expenses.size} expenses in range (budgetedOnly=$budgetedOnly)")
         return expenses.groupBy { it.expenseCategory }
             .map { (cat, list) ->
                 val total = list.sumOf { it.expenseAmount.toDoubleOrNull() ?: 0.0 }

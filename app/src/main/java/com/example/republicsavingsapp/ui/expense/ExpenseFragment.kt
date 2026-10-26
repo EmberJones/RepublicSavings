@@ -27,6 +27,7 @@ import java.util.Calendar
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
+import com.example.republicsavingsapp.AppLog
 import com.example.republicsavingsapp.ui.transaction.AddTransactionFragment
 
 class ExpenseFragment : Fragment() {
@@ -145,6 +146,7 @@ class ExpenseFragment : Fragment() {
             .setNegativeButton("Cancel", null)
             .setPositiveButton("Delete") { _, _ ->
                 val app = requireActivity().application as RepublicSavingsApp
+                AppLog.d("Wallet", "Deleting \"${expense.expenseName}\"")
                 lifecycleScope.launch {
                     app.expenseRepository.deleteExpense(expense)
                     if (_binding != null) loadBreakdown()

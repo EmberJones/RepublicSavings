@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.republicsavingsapp.AppLog
 import com.example.republicsavingsapp.RepublicSavingsApp
 import com.example.republicsavingsapp.databinding.FragmentRewardsBinding
 import kotlinx.coroutines.launch
@@ -46,7 +47,7 @@ class RewardsFragment : Fragment() {
                 repo.nextTicketSaving()?.let { tiers = FairRules.eligibleTiers(it) }
                 count
             } catch (e: Exception) {
-                Log.e(TAG, "Could not refresh tickets", e)
+                AppLog.e("Fair", "Could not refresh tickets", e)
                 null
             }
             val b = _binding ?: return@launch // screen was left while loading
@@ -73,7 +74,7 @@ class RewardsFragment : Fragment() {
             val prize = try {
                 repo.spinNextTicket()
             } catch (e: Exception) {
-                Log.e(TAG, "Spin failed", e)
+                AppLog.e("Fair", "Spin failed", e)
                 _binding?.resultText?.text = "Couldn't spin. Check your connection and try again."
                 _binding?.spinButton?.isEnabled = true
                 return@launch

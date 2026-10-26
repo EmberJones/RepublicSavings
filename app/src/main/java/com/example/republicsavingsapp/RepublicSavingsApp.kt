@@ -42,7 +42,7 @@ class RepublicSavingsApp : Application() {
             FirestoreFairStateDAO(FirebaseFirestore.getInstance()),
             SharedPreferencesFairStore(applicationContext),
             expensesDAO,
-            categoryDAO
-        )
+            categoryDAO,
+            log = { AppLog.d("Fair", it) })
     }
 }
