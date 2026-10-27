@@ -3,7 +3,7 @@
 A budgeting app for people who want to take real control of their money. Built for Android, Republic Savings is designed around the South African cost of living, where every rand counts and knowing where it went matters.
 Most budgeting apps connect to your bank and log everything automatically. We chose a different approach: you log your own expenses. It keeps you accountable, and it keeps you aware of your spending habits.
 
-A demonstration and user starter guide can be located on youtube at: https://youtu.be/q3Tn3V3xsxw
+A demonstration and user starter guide can be located on youtube at: https://youtu.be/akCPWiPvqs0
 
 <img width="200" height="200" alt="WhatsApp Image 2026-09-20 at 11 08 29dark" src="https://github.com/user-attachments/assets/2a96552a-5c88-4618-9aa8-51a29c732a97" />
 <p>
