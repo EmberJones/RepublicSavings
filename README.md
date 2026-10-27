@@ -27,7 +27,7 @@ A demonstration and user starter guide can be located on youtube at: https://you
   <img src="screenshots/settings.png" width="200">
 </p>
 
-## Our own features
+## Our unique features
 
 ### 1. The Fair (Ember Jones)
 
@@ -80,8 +80,10 @@ We used GitHub to host the project and collaborate as a team. Each of us worked 
 - The prize history is stored on the device, so reinstalling the app clears it. Tickets are stored online and are not affected.
 - The Wallet has a period filter and search, but no calendar or day view and no amount filter.
 - Deleting a category keeps its expenses. They still appear in the Wallet and charts under their old category name.
+  
 ## References
 No external code was used. Claude was used to assist with code, documentation and debugging. 
+Documentation for the apps Research and Design are included in the Github repo in the Docs folder.
 
 **The Team**
 Built by four Vega Cape Town Students for OPSC7311:
